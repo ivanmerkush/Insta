@@ -9,6 +9,12 @@ import { AppComponent } from "./app.component";
 import {HttpClientModule} from "@angular/common/http";
 import {Ng4LoadingSpinnerModule} from "ng4-loading-spinner";
 import {RouterModule, Routes} from "@angular/router";
+import { HomeComponent } from './components/home/home.component';
+import { HeaderComponent } from './components/header/header.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegistrationComponent } from './components/registration/registration.component';
+import { FeedComponent } from './components/feed/feed.component';
+import { PostComponent } from './components/post/post.component';
 
 // const appRoutes: Routes = [
 //   {path: "", component: HomeComponent},
@@ -19,7 +25,13 @@ import {RouterModule, Routes} from "@angular/router";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    HeaderComponent,
+    LoginComponent,
+    RegistrationComponent,
+    FeedComponent,
+    PostComponent
   ],
   imports: [
     BrowserModule,
@@ -34,4 +46,6 @@ import {RouterModule, Routes} from "@angular/router";
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+}
