@@ -1,0 +1,61 @@
+
+<div class="container mt-lg-5" align="center">
+  <table class="table">
+    <tbody>
+    <tr align="center">
+      <td width="40%">
+        <img src={{user.userPhoto}} class="round" >
+      </td>
+      <td width="60%" align="left">
+        <h5 style="font-size: 40px">{{user.nickname}}</h5>
+        <ul align="left" class="pr-5">
+          <li>Email: <strong>{{user.email}}</strong></li>
+          <li>{{user.name}}</li>
+          <li><strong>{{user.subscribers}}  </strong> subscribers,
+            <strong>{{user.subscriptions}}</strong> subscription</li>
+
+        </ul>
+        <br>
+        <button style="width:200px;" type="button" class="btn btn-dark" (click)="_openModal(template, user)">Edit Profile</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <app-posts></app-posts>
+</div>
+
+<!--modal-->
+<<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Edit Profile</h4>
+    <button type="button" class="close pull-right"
+            aria-label="Close"  (click)="_closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label>Username</label>
+      <input class="form-control" name="username" [(ngModel)]="editableUser.nickname" #nickname="ngModel" />
+
+    </div>
+    <div class="form-group">
+      <label>Name</label>
+      <input class="form-control" name="name" [(ngModel)]="editableUser.name" #name="ngModel"/>
+    </div>
+    <div class="form-group">
+      <label>E-mail</label>
+      <input class="form-control" name="email" [(ngModel)]="editableUser.email" #email="ngModel"
+             required pattern="[a-zA-Z0-9_]+@[a-zA-Z_]+?\.[a-zA-Z]{2,4}"/>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default"
+            [disabled]="nickname.invalid || email.invalid || name.invalid">Save
+    </button>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal"  (click)="_closeModal()">Close</button>
+
+  </div>
+</ng-template>
+

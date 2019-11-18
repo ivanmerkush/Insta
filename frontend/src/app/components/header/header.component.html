@@ -1,18 +1,39 @@
-<nav class="navbar navbar-expand-md navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
   <a class="navbar-brand" href="/">Instagram</a>
-  <button class="navbar-toggler" type="button" data-toggler="collapse" data-target="#navbarSupportedContent"></button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="/">User</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/feed">Feed</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/search">Search</a>
-            </li>
-        </ul>
-      </div>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/home">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/feed">Feed</a>
+      </li>
+      <li>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2 border-dark" name="searchQuery" type="search" [(ngModel)]="searchQuery">
+          <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" (click)="openModal(template)">Search</button>
+        </form>
+      </li>
+    </ul>
+    <div class="nav-item">
+      <a class="nav-link" href="/messages">Messages</a>
+    </div>
+  </div>
 </nav>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left"> Search result</h4>
+    <button type="button" class="close pull-right"
+            aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+    <div class="modal-body">
+      <table class="table">
+        <tr *ngFor="let mamka of goodmamks">
+          <td scope="row">{{mamka}}</td>
+        </tr>
+      </table>
+    </div>
+</ng-template>

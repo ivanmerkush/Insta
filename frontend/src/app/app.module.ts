@@ -11,17 +11,28 @@ import {Ng4LoadingSpinnerModule} from "ng4-loading-spinner";
 import {RouterModule, Routes} from "@angular/router";
 import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
-import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { FeedComponent } from './components/feed/feed.component';
 import { PostComponent } from './components/post/post.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { UserComponent } from './components/user/user.component';
+import {UserService} from "./services/user.service";
+import {LoginComponent} from "./components/login/login.component";
+import {PostService} from "./services/post.service";
+import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { MessagesComponent } from './components/messages/messages.component';
+import {PerfectScrollbarModule} from "ngx-perfect-scrollbar";
 
-// const appRoutes: Routes = [
-//   {path: "", component: HomeComponent},
-//   {path: "home", component: HomeComponent},
-//   {path: "billing-details/:id", component: BillingDetailsViewComponent},
-//   {path: "**", component: NotFoundComponent}
-// ];
+const appRoutes: Routes = [
+  {path: "", component: HomeComponent},
+  {path: "home", component: HomeComponent},
+  {path: "user/:id", component: UserComponent},
+  {path: "login", component: LoginComponent},
+  {path: "signup", component: LoginComponent},
+  {path: "messages", component: MessagesComponent},
+  {path: "**", component: NotFoundComponent}
+];
 
 @NgModule({
   declarations: [
@@ -31,7 +42,10 @@ import { PostComponent } from './components/post/post.component';
     LoginComponent,
     RegistrationComponent,
     FeedComponent,
-    PostComponent
+    PostComponent,
+    NotFoundComponent,
+    UserComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule,
@@ -41,9 +55,13 @@ import { PostComponent } from './components/post/post.component';
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
-    // RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    BrowserAnimationsModule,
+    BsDatepickerModule.forRoot(),
+    PerfectScrollbarModule,
   ],
-  providers: [],
+  providers: [UserService, PostService],
+  exports: [HomeComponent, UserComponent, LoginComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {

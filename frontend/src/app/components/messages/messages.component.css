@@ -1,0 +1,11 @@
+.container {
+  position: relative;
+  margin: 0px auto;
+  padding: 0px;
+  width: 60%;
+}
+
+.content {
+  width: 200px;
+  height: 200px;
+}

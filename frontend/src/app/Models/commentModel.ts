@@ -1,20 +1,15 @@
 export class Comment{
-  _postid: number;
-  _author: string;
-  _text: string;
-  _dateTime: time;
+  idComment: number;
+  text: number;
+  date: Date;
+  idAuthor: number;
+  idPost: number;
 
-
-  constructor(postid: number,author: string, text: string, dateTime: time) {
-    this._postid = postid;
-    this._author = author;
-    this._text = text;
-    this._dateTime = dateTime;
+  constructor(idComment: number, text: number, date: Date, idAuthor: number, idPost: number) {
+    this.idComment = idComment;
+    this.text = text;
+    this.date = date;
+    this.idAuthor = idAuthor;
+    this.idPost = idPost;
   }
-}
-
-interface time {
-  hours : number;
-  minutes: number;
-  seconds:number;
 }

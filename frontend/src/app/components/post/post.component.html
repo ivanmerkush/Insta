@@ -7,22 +7,23 @@
   <td align="center">
     <tr *ngFor="let post of posts" class="bg-dark" >
       <div class="img_wrap">
-        <img src={{post._photoPath}} alt="not found">
+        <img src="C:\\Users\\Ivan\\Desktop\\5jpg.jpg" alt="not found"/>
       </div>
       <table class="table" >
         <tr scope="col">
-          <b>{{post._likes}}</b> likes
+          <b>{{post.likeCount}}</b> likes
           <br>
-          <b>{{post._date.getDate()}}.{{post._date.getMonth()}}.{{post._date.getFullYear()}}</b>
+          <b>{{post.date.getDate()}}.{{post.date.getMonth()}}.{{post.date.getFullYear()}}</b>
         </tr>
         <tr>
           <p>
-          <strong>{{post._author}}</strong>: {{post._text}}
+<!--          <strong>{{post._author}}</strong>: -->
+            {{post.text}}
         </tr>
 
         <th scope="col">Comments</th>
         <tr *ngFor="let comment of comments">
-          <div *ngIf="comment._postid == post._id">
+          <div *ngIf="comment._postid == post.id">
             {{comment._author}}: {{comment._text}}
             <br>
           </div>
