@@ -6,6 +6,7 @@ import com.netcracker.ivanmerkush.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -15,8 +16,22 @@ public class UserServiceImpl implements UserService {
     private UserRepository repository;
 
     @Override
-    public Optional<UserEntity> getUserById(Integer id) {
-        return repository.findById(id);
+    public UserEntity getUserById(Integer id) {
+        return repository.getUserEntityByIdUser(id);
     }
 
+    @Override
+    public UserEntity addUser(UserEntity account) {
+        return repository.save(account);
+    }
+
+    @Override
+    public List<UserEntity> getUsersBySearch(String searchWord) {
+        return repository.getUserEntitiesByNicknameContaining(searchWord);
+    }
+
+    @Override
+    public UserEntity getUserByNickname(String name) {
+        return repository.getUserEntityByNickname(name);
+    }
 }

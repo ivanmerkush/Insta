@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Post} from "../Models/postModel";
+import {Post} from "../modules/postModel";
 
 @Injectable()
 export class PostService{
@@ -13,5 +13,12 @@ export class PostService{
     return this.http.get<Post[]>('/api/posts/' + id);
   }
 
+  deletePost(id: number): Observable<void> {
+    return this.http.delete<void>('/api/posts/' + id);
+  }
+
+  countPosts(id: number) : Observable<number> {
+    return this.http.get<number>('/api/posts/count' + id);
+  }
 
 }

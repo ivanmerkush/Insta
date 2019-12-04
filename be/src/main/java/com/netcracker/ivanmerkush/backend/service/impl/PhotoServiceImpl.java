@@ -16,6 +16,6 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Override
     public Optional<PhotoEntity> getPhotoByIdPost(Integer id) {
-        return repository.getByIdPost(id);
+        return repository.getPhotoEntityByIdPost(id);
     }
 }

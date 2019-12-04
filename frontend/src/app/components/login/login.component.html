@@ -1,69 +1,56 @@
 <div class="container mt-5 ">
   <div class="row w-75 bg-white border">
-      <div class="col">
-        <h3 class="font-weight-normal">Log into</h3>
-        <form>
-              <div class="form-group row ">
-                <label for="loginEmail" class="col-sm-2 col-form-label">Login/Email</label>
-                <div class="col-sm-10">
-                  <input type="email" class="form-control" id="loginEmail">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="loginPassword" class="col-sm-2 col-form-label">Password</label>
-                <div class="col-sm-10">
-                  <input type="password" class="form-control" id="loginPassword">
-                </div>
-              </div>
-  <!--            <div class="form-check-inline">-->
-  <!--              <input type="checkbox" class="form-check-input" id="exampleCheck1">-->
-  <!--              <label class="form-check-label" for="exampleCheck1">Check me out</label>-->
-  <!--            </div>-->
-              <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-      </div>
+    <div class="col">
+      <h3 class="font-weight-normal">Log into</h3>
+      <form>
+        <div class="form-group row ">
+          <label for="loginEmail" class="col-sm-2 col-form-label" >Login/Email</label>
+          <div class="col-sm-10">
+            <input type="email" class="form-control" id="loginEmail" [(ngModel)]="logNickname" name="logname" placeholder="Nickname/Email">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="loginPassword" class="col-sm-2 col-form-label">Password</label>
+          <div class="col-sm-10">
+            <input type="password" class="form-control" id="loginPassword" [(ngModel)]="logPassword" name="logpassword" placeholder="Password">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" (click)="loginToAccount()">Submit</button>
+      </form>
+    </div>
   </div>
   <div class="row mt-5 w-75 bg-white border">
     <div class="col">
-        <h3>Registration</h3>
-        <form>
-          <div class="form-group row ">
-            <label for="regNickname" class="col-sm-2 col-form-label">Nickname</label>
-            <div class="col-sm-10">
-              <input type="nickname" class="form-control" id="regNickname">
-            </div>
+      <h3>Registration</h3>
+      <form>
+        <div class="form-group row ">
+          <label for="regNickname" class="col-sm-2 col-form-label" >Nickname</label>
+          <div class="col-sm-10">
+            <input class="form-control mr-sm-2" type="nickname" id="regNickname" [(ngModel)]="newNickname" name="nick" placeholder="Nickname">
           </div>
+        </div>
 
-          <div class="form-group row ">
-            <label for="regName" class="col-sm-2 col-form-label">Name</label>
-            <div class="col-sm-10">
-              <input type="name" class="form-control" id="regName">
-            </div>
+        <div class="form-group row ">
+          <label for="regName" class="col-sm-2 col-form-label">Name</label>
+          <div class="col-sm-10">
+            <input class="form-control mr-sm-2" type="name" id="regName" [(ngModel)]="newName" name="name" placeholder="Name">
           </div>
+        </div>
 
-          <div class="form-group row">
-            <label for="regEmail" class="col-sm-2 col-form-label">Email</label>
-            <div class="col-sm-10">
-              <input type="email" class="form-control" id="regEmail">
-            </div>
+        <div class="form-group row">
+          <label for="regEmail" class="col-sm-2 col-form-label">Email</label>
+          <div class="col-sm-10">
+            <input class="form-control mr-sm-2" type="email" id="regEmail" [(ngModel)]="newEmail" name="email" placeholder="Email">
           </div>
-          <div class="form-group row">
-            <label for="regPassword" class="col-sm-2 col-form-label">Password</label>
-              <div class="col-sm-10">
-              <input type="password" class="form-control" id="regPassword">
-            </div>
-           </div>
-          <div class="form-group row">
-            <label for="regBirth" class="col-sm-2 col-form-label">Birthday</label>
-            <div class="col-sm-10">
-              <input type="text"
-                     id="regBirth"
-                     class="form-control"
-                     bsDatepicker>
-            </div>
+        </div>
+        <div class="form-group row">
+          <label for="regPassword" class="col-sm-2 col-form-label">Password</label>
+          <div class="col-sm-10">
+            <input class="form-control mr-sm-2" type="password" id="regPassword" [(ngModel)]="newPassword" name="password" placeholder="Password">
           </div>
-            <button type="SignUp" class="btn btn-primary">Sign Up</button>
-          </form>
+        </div>
+        <button type="SignUp" class="btn btn-primary" (click)="addUserAccount()">Sign Up</button>
+      </form>
     </div>
   </div>
 </div>

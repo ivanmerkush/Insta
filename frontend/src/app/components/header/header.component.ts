@@ -1,7 +1,11 @@
 import {Component, Input, OnInit, Output, TemplateRef} from '@angular/core';
-import {User} from "../../Models/userModel";
+import {User} from "../../modules/userModel";
+import {Hashtag} from "../../modules/hashtagModel";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
 import {forEach} from "@angular/router/src/utils/collection";
+import {Subscription} from "rxjs";
+import {UserService} from "../../services/user.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -9,34 +13,54 @@ import {forEach} from "@angular/router/src/utils/collection";
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+
+  public notNull: boolean = true;
   public searchQuery: string;
-  public mamks: string[];
-  public goodmamks: string[] = [];
+  public goodvars: User[] = [];
   public users: User[];
   public modalRef: BsModalRef;
+  public subscriptions: Subscription[] = [];
 
-  constructor(private modalService: BsModalService) { }
+
+
+  constructor(private userService :UserService,
+              private activatedRoute: Router,
+              private modalService: BsModalService) { }
 
   ngOnInit() {
-    this.mamks = ["123", "456", "qwe", "asd", "asdf", "1"];
+      this.activatedRoute.events.subscribe(value => {console.log(value)});
   }
 
   public findEqual() : void {
-    this.mamks.forEach(mamka => {
-      if(mamka.includes(this.searchQuery)) {
-        this.goodmamks.push(mamka);
+    this.goodvars = [];
+    this.users.forEach(user => {
+      if(user.nickname.includes(this.searchQuery)) {
+        this.goodvars.push(user);
       }
     })
   }
 
   public openModal(template: TemplateRef<any>) : void {
-    this.goodmamks = [];
-    this.findEqual();
-    this.modalRef = this.modalService.show(template);
-
+    this.loadSearchResults();
+    if(this.goodvars)
+    {
+      this.notNull = true;
+      this.findEqual();
+      this.modalRef = this.modalService.show(template);
+    }
+    else
+    {
+      this.notNull = false;
+    }
   }
 
   public closeModal(): void {
     this.modalRef.hide();
+  }
+
+  public loadSearchResults() : void {
+    this.subscriptions.push(this.userService.getUsersBySearch(this.searchQuery).subscribe(accounts => {
+        this.users = accounts as User[];
+    }))
   }
 }

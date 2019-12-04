@@ -15,10 +15,11 @@ public class UserEntity {
     private Role role;
     private Status status;
     private int subscribers;
-    private int subscription;
+    private int subscriptions;
     private String profilePhoto;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user")
     public int getIdUser() {
         return idUser;
@@ -111,13 +112,13 @@ public class UserEntity {
     }
 
     @Basic
-    @Column(name = "subscription")
-    public int getSubscription() {
-        return subscription;
+    @Column(name = "subscriptions")
+    public int getSubscriptions() {
+        return subscriptions;
     }
 
-    public void setSubscription(int subscription) {
-        this.subscription = subscription;
+    public void setSubscriptions(int subscriptions) {
+        this.subscriptions = subscriptions;
     }
 
     @Basic
@@ -144,12 +145,12 @@ public class UserEntity {
                 Objects.equals(role, that.role) &&
                 Objects.equals(status, that.status) &&
                 Objects.equals(subscribers, that.subscribers) &&
-                Objects.equals(subscription, that.subscription) &&
+                Objects.equals(subscriptions, that.subscriptions) &&
                 Objects.equals(profilePhoto, that.profilePhoto);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idUser, nickname, name, password, email, info, role, status, subscribers, subscription, profilePhoto);
+        return Objects.hash(idUser, nickname, name, password, email, info, role, status, subscribers, subscriptions, profilePhoto);
     }
 }

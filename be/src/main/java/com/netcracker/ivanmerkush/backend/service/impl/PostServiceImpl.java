@@ -19,4 +19,14 @@ public class PostServiceImpl implements PostService {
         return repository.getAllFindByIdAuthor(id);
     }
 
+    @Override
+    public void deletePost(Integer id) {
+        repository.deleteById(id);
+    }
+
+    @Override
+    public Integer countPostsOfAuthor(Integer id) {
+        return repository.countAllByIdAuthor(id);
+    }
+
 }

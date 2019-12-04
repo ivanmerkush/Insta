@@ -1,9 +1,9 @@
 export class Message {
-   idDirect: number;
-   message: string;
-   date: Date;
-   idReceiver: number;
-   idSender: number;
+  idDirect: number;
+  message: string;
+  date: Date;
+  idReceiver: number;
+  idSender: number;
 
 
   constructor(idDirect: number, message: string, date: Date, idReceiver: number, idSender: number) {

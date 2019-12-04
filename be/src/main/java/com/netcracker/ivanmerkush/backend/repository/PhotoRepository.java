@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface PhotoRepository extends CrudRepository<PhotoEntity,Integer> {
-    Optional<PhotoEntity> getByIdPost(Integer id);
+    Optional<PhotoEntity> getPhotoEntityByIdPost(Integer id);
 }

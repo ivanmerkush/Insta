@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface PostService {
     List<PostEntity> getPostsForUser(Integer id);
+    void deletePost(Integer id);
+    Integer countPostsOfAuthor(Integer id);
 }

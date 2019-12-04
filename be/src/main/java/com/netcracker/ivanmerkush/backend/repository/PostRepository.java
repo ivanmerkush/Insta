@@ -11,4 +11,6 @@ public interface PostRepository extends CrudRepository<PostEntity, Integer> {
 
     List<PostEntity> getAllFindByIdAuthor(Integer id);
 
+    Integer countAllByIdAuthor(Integer id);
+
 }

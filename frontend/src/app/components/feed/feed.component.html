@@ -1,3 +1,35 @@
-<p>
-  feed works!
-</p>
+<div class="container mt-lg-5" align="center">
+  <form *ngFor="let postPhotoLike of postPhotoLikes">
+    <div class="form-group">
+      <div class="row">
+        <div class="col">
+          <div class="img_wrap bg-dark">
+            <img src="api/photos/{{postPhotoLike.photo.photoPath}}" alt="not found"/>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="_form form-inline">
+      <div class="btn-group ml-5 mb-2" role="group">
+        <div *ngIf="postPhotoLike.like;else disliked">
+          <button type="button" class="btn btn-success" (click)="postPhotoLike.like = !postPhotoLike.like">Like</button>
+        </div>
+        <ng-template #disliked>
+          <button type="button" class="btn btn-danger" (click)="postPhotoLike.like = !postPhotoLike.like">Dislike</button>
+        </ng-template>
+        <button type="button" class="btn">Comment</button>
+      </div>
+    </div>
+    <div style="padding-right: 50%;" class="form-group">
+      <div class="row">
+        <div class="col">
+          <a><strong>{{postPhotoLike.post.likeCount}}</strong> likes</a>
+        </div>
+        <div class="col">
+          <a class="font-weight-light">{{dateToString(postPhotoLike.post.date)}}</a>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</div>

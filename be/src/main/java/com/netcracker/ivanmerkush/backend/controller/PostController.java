@@ -26,4 +26,15 @@ public class PostController {
     public List<PostEntity> getPostsForUser(@PathVariable(name = "id") Integer id) {
         return postService.getPostsForUser(id);
     }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void deletePost(@PathVariable Integer id) {
+        postService.deletePost(id);
+    }
+
+
+    @RequestMapping(value ="/count{id}", method = RequestMethod.GET)
+    public Integer countPosts(@PathVariable(name = "id") Integer id) {
+        return postService.countPostsOfAuthor(id);
+    }
 }

@@ -1,31 +1,66 @@
-
 <div class="container mt-lg-5" align="center">
-  <table class="table">
-    <tbody>
-    <tr align="center">
-      <td width="40%">
-        <img src={{user.userPhoto}} class="round" >
-      </td>
-      <td width="60%" align="left">
-        <h5 style="font-size: 40px">{{user.nickname}}</h5>
-        <ul align="left" class="pr-5">
-          <li>Email: <strong>{{user.email}}</strong></li>
-          <li>{{user.name}}</li>
-          <li><strong>{{user.subscribers}}  </strong> subscribers,
-            <strong>{{user.subscriptions}}</strong> subscription</li>
-
-        </ul>
-        <br>
-        <button style="width:200px;" type="button" class="btn btn-dark" (click)="_openModal(template, user)">Edit Profile</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-  <app-posts></app-posts>
+  <div class="row">
+    <div class="col">
+      <div>z
+        <img src="api/photos/{{user?.profilePhoto}}" alt="profilePhoto" class="rounded-circle border"
+             width="200px" height="200px">
+      </div>
+    </div>
+    <div class="col-8">
+      <form>
+        <div class="form-inline">
+          <div class="form-group row">
+            <div class="nick col-4 mx-sm-3">
+              {{user?.nickname}}
+            </div>
+          </div>
+        </div>
+        <div class="form-inline mt-3">
+          <div class="row w-100">
+            <div class="col-xl">
+              <strong>{{numberOfPosts}}</strong> posts
+            </div>
+            <div class="col-xl">
+              <strong>{{followers}}</strong> subscribers
+            </div>
+            <div class="col-sm">
+              <strong>{{follows}}</strong> subscriptions
+            </div>
+          </div>
+        </div>
+        <div class="form-inline mt-3">
+          <div class="row">
+            <div class="col-sm-4 text-sm-center">
+              <strong>{{user?.name}}</strong>
+            </div>
+            <div class="col-sm-2">
+              {{user?.email}}
+            </div>
+          </div>
+        </div>
+        <div class="form-inline mt-3">
+          <div class="row">
+            <div class="col-sm">
+              <p class="text-justify">{{user?.info}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="_form">
+          <div class="btn-group ml-5 mb-2 " role="group">
+            <button type="subscribe" class="btn btn-outline-dark" (click)="subscribe()">Subscribe</button>
+            <button type="button" class="btn btn-outline-dark">Message</button>
+          </div>
+        </div>
+        </form>
+    </div>
+  </div>
+  <hr>
 </div>
 
+<app-posts></app-posts>
 <!--modal-->
-<<ng-template #template>
+
+<ng-template #template>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Edit Profile</h4>
     <button type="button" class="close pull-right"
@@ -36,26 +71,29 @@
   <div class="modal-body">
     <div class="form-group">
       <label>Username</label>
-      <input class="form-control" name="username" [(ngModel)]="editableUser.nickname" #nickname="ngModel" />
+      <input class="form-control" name="username" [(ngModel)]="user.nickname" #nickname="ngModel" />
 
     </div>
     <div class="form-group">
       <label>Name</label>
-      <input class="form-control" name="name" [(ngModel)]="editableUser.name" #name="ngModel"/>
+      <input class="form-control" name="name" [(ngModel)]="user.name" #name="ngModel"/>
     </div>
     <div class="form-group">
       <label>E-mail</label>
-      <input class="form-control" name="email" [(ngModel)]="editableUser.email" #email="ngModel"
-             required pattern="[a-zA-Z0-9_]+@[a-zA-Z_]+?\.[a-zA-Z]{2,4}"/>
+      <input class="form-control" name="email" [(ngModel)]="user.email" #email="ngModel"
+             required pattern="[a-zA-Z0-9._]+@[a-zA-Z_]+?\.[a-zA-Z]{2,4}"/>
+    </div>
+    <div class="form-group">
+      <label>Information</label>
+      <input class="form-control" name="info" [(ngModel)]="user.info" #info="ngModel"/>
     </div>
 
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default"
-            [disabled]="nickname.invalid || email.invalid || name.invalid">Save
+            [disabled]="nickname.invalid || email.invalid || name.invalid || info.invalid">Save
     </button>
     <button type="button" class="btn btn-secondary" data-dismiss="modal"  (click)="_closeModal()">Close</button>
 
   </div>
 </ng-template>
-

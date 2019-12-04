@@ -1,13 +1,12 @@
 export class Post{
-  id: number;
+  public idPost: number;
   text:string;
   date: Date;
   idAuthor: number;
   likeCount:number;
 
 
-  constructor(id: number, text: string, date: Date, idAuthor: number, likeCount: number) {
-    this.id = id;
+  constructor(text: string, date: Date, idAuthor: number, likeCount: number) {
     this.text = text;
     this.date = date;
     this.idAuthor = idAuthor;

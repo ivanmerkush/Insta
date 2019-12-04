@@ -1,0 +1,14 @@
+.nick {
+  font-size: 30px;
+}
+
+.text-justify {
+  text-align: justify;
+}
+button {
+  width: 200px;
+}
+
+._form {
+  padding-right: 100%;
+}

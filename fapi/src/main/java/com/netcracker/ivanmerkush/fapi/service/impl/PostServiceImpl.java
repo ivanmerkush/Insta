@@ -20,4 +20,16 @@ public class PostServiceImpl implements PostService {
         Post[] posts =  restTemplate.getForObject(backendServerUrl + "/api/posts/" + id, Post[].class);
         return Arrays.asList(posts);
     }
+
+    @Override
+    public void deletePost(Long id) {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.delete(backendServerUrl + "/api/posts/" + id);
+    }
+    @Override
+    public Integer countPostsForAuthor(Long id) {
+        RestTemplate restTemplate = new RestTemplate();
+        Integer result = restTemplate.getForObject(backendServerUrl + "/api/posts/count" + id, Integer.class);
+        return result;
+    }
 }
