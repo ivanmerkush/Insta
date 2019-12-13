@@ -3,8 +3,7 @@ export class Photo {
   photoPath: string;
   idPost: number;
 
-  constructor(idPhoto: number, photoPath: string, idPost: number) {
-    this.idPhoto = idPhoto;
+  constructor(photoPath: string, idPost: number) {
     this.photoPath = photoPath;
     this.idPost = idPost;
   }

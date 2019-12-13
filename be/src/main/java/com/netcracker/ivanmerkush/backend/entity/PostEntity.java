@@ -10,10 +10,10 @@ public class PostEntity {
     private int idPost;
     private String text;
     private Date date;
-    private Integer likeCount;
     private int idAuthor;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_post")
     public int getIdPost() {
         return idPost;
@@ -44,13 +44,13 @@ public class PostEntity {
     }
 
     @Basic
-    @Column(name = "like_count")
-    public Integer getLikeCount() {
-        return likeCount;
+    @Column(name = "id_author")
+    public int getIdAuthor() {
+        return idAuthor;
     }
 
-    public void setLikeCount(Integer likeCount) {
-        this.likeCount = likeCount;
+    public void setIdAuthor(int idAuthor) {
+        this.idAuthor = idAuthor;
     }
 
     @Override
@@ -59,23 +59,13 @@ public class PostEntity {
         if (o == null || getClass() != o.getClass()) return false;
         PostEntity that = (PostEntity) o;
         return idPost == that.idPost &&
+                idAuthor == that.idAuthor &&
                 Objects.equals(text, that.text) &&
-                Objects.equals(date, that.date) &&
-                Objects.equals(likeCount, that.likeCount);
+                Objects.equals(date, that.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idPost, text, date, likeCount);
-    }
-
-    @Basic
-    @Column(name = "id_author")
-    public int getIdAuthor() {
-        return idAuthor;
-    }
-
-    public void setIdAuthor(int idAuthor) {
-        this.idAuthor = idAuthor;
+        return Objects.hash(idPost, text, date, idAuthor);
     }
 }

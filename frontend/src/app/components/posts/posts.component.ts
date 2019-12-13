@@ -1,13 +1,14 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
-import {Post} from "../../modules/postModel";
-import {Comment} from "../../modules/commentModel";
+import {Post} from "../../models/postModel";
+import {Comment} from "../../models/commentModel";
 import {PostService} from "../../services/post.service";
 import {Subscription} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
-import {Photo} from "../../modules/photoModel";
+import {Photo} from "../../models/photoModel";
 import {PhotoService} from "../../services/photo.service";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
-import {PostPhotoLike} from "../../modules/postPhotoLike";
+import {PostPhotoLike} from "../../models/postPhotoLike";
+import {PostViewModel} from "../../models/postViewModel";
 
 @Component({
   selector: 'app-posts',
@@ -21,6 +22,7 @@ export class PostsComponent implements OnInit {
   public photos: Photo[] = [];
   public posts: Post[] = [];
   public modalRef: BsModalRef;
+  public postViewModels: PostViewModel[] = [];
 
   constructor(private postService: PostService,
               private modalService: BsModalService,

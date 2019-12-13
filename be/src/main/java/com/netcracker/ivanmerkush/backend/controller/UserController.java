@@ -1,14 +1,12 @@
 package com.netcracker.ivanmerkush.backend.controller;
 
 import com.netcracker.ivanmerkush.backend.entity.UserEntity;
-import com.netcracker.ivanmerkush.backend.service.UserService;
 import com.netcracker.ivanmerkush.backend.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -17,25 +15,32 @@ public class UserController {
     @Autowired
     private UserServiceImpl userService ;
 
-    @RequestMapping(value = "/id{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/id/{id}")
     public ResponseEntity<UserEntity> getUserById(@PathVariable(name = "id") Integer id) {
         UserEntity user = userService.getUserById(id);
         return ResponseEntity.ok(user);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public UserEntity addUser(@RequestBody UserEntity account) {
-        return userService.addUser(account);
+    @PostMapping()
+    public UserEntity saveUser(@RequestBody UserEntity account) {
+        return userService.saveUser(account);
     }
 
-    @RequestMapping(value = "/{searchWord}", method = RequestMethod.GET)
-    public List<UserEntity> getUsersBySearch(@PathVariable String searchWord) {
-        return userService.getUsersBySearch(searchWord);
+    @GetMapping(value = "/{searchWord}")
+    public List<UserEntity> getUsersBySearch(@PathVariable String searchWord,
+                                             @RequestParam(defaultValue = "0") Integer pageNo,
+                                             @RequestParam(defaultValue = "10") Integer pageSize) {
+        return userService.getUsersBySearch(searchWord, pageNo, pageSize);
     }
 
-    @RequestMapping(value = "/login{name}", method = RequestMethod.GET)
+    @GetMapping(value = "/login{name}")
     public ResponseEntity<UserEntity> getUserByNickname(@PathVariable(name = "name") String name) {
         UserEntity user = userService.getUserByNickname(name);
         return ResponseEntity.ok(user);
+    }
+
+    @DeleteMapping(value ="/{id}")
+    public void deleteUser(@PathVariable(name="id") Integer id) {
+        userService.deleteUser(id);
     }
 }

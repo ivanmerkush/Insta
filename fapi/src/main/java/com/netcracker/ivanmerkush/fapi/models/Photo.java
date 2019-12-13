@@ -5,6 +5,15 @@ public class Photo {
     private String photoPath;
     private int idPost;
 
+    public Photo() {
+
+    }
+
+    public Photo(String photoPath, int idPost) {
+        this.photoPath = photoPath;
+        this.idPost = idPost;
+    }
+
     public int getIdPhoto() {
         return idPhoto;
     }

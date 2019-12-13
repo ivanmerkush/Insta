@@ -1,5 +1,5 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
-import {Role, Status, User} from "../../modules/userModel";
+import {Role, Status, User} from "../../models/userModel";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
 import {UserService} from "../../services/user.service";
 import {Subscription} from "rxjs";
@@ -7,7 +7,7 @@ import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {ActivatedRoute} from "@angular/router";
 import {PostService} from "../../services/post.service";
 import {SubService} from "../../services/sub.service";
-import {Sub} from "../../modules/subModel";
+import {Sub} from "../../models/subModel";
 
 @Component({
   selector: 'app-user',
@@ -21,6 +21,7 @@ export class UserComponent implements OnInit {
   public followers: number;
   public follows: number;
   public modalRef: BsModalRef;
+  public isSubbed: boolean;
   constructor(private userService: UserService,
               private postService: PostService,
               private subService : SubService,
@@ -30,6 +31,7 @@ export class UserComponent implements OnInit {
 
   }
 
+  bond: Sub;
   numberOfPosts: number;
 
   private subscriptions: Subscription[] =[];
@@ -38,10 +40,13 @@ export class UserComponent implements OnInit {
     const id = this.activateRoute.snapshot.params['id'];
     this.loadUserInfo(id);
     this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    this.checkSubscribe(id);
   };
 
-  private _refreshUser(): void {
-
+  public checkSubscribe(id: number) : void {
+    this.subService.isBondExists(id, this.currentUser.idUser).subscribe(answer => {
+      this.isSubbed = answer as boolean;
+    });
   }
 
   private subscribe(): void {
@@ -50,7 +55,20 @@ export class UserComponent implements OnInit {
       this.subscriptions.push(this.subService.countSubscribers(this.user.idUser).subscribe(subs => {
         this.followers = subs as number;
       }))
+      this.isSubbed = true;
     }))
+  }
+
+  private unsubscribe(): void {
+    this.subscriptions.push(this.subService.getSub(this.user.idUser, this.currentUser.idUser).subscribe(sub => {
+      this.bond = sub as Sub;
+      this.subscriptions.push(this.subService.deleteSub(this.bond.idSub).subscribe(smthg => {
+        this.subscriptions.push(this.subService.countSubscribers(this.user.idUser).subscribe(subs => {
+          this.followers = subs as number;
+        }))
+      }))
+      this.isSubbed = false;
+    }));
   }
 
   public _openModal(template: TemplateRef<any>): void {

@@ -4,10 +4,7 @@ package com.netcracker.ivanmerkush.fapi.controller;
 import com.netcracker.ivanmerkush.fapi.models.Post;
 import com.netcracker.ivanmerkush.fapi.service.PostService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,20 +19,27 @@ public class PostController {
         this.postService = postService;
     }
 
-    @RequestMapping(value = "/{id}")
-    public ResponseEntity<List<Post>> getPosts(@PathVariable String id) {
-        Long idUser = Long.valueOf(id);
-        return ResponseEntity.ok(postService.getPostsForUser(idUser));
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<List<Post>> getPosts(@PathVariable String id,
+                                               @RequestParam(name ="offset",defaultValue = "0") Integer pageNo,
+                                               @RequestParam(name="limit",defaultValue = "5") Integer pageSize) {
+        return ResponseEntity.ok(postService.getPostsForHome(Integer.valueOf(id), pageNo, pageSize));
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public void deletePost(@PathVariable String id) {
-        postService.deletePost(Long.valueOf(id));
+        postService.deletePost(Integer.valueOf(id));
     }
 
-    @RequestMapping(value ="/count{id}", method = RequestMethod.GET)
+    @GetMapping(value ="/count{id}")
     public ResponseEntity<Integer> countPosts(@PathVariable String id) {
-        Long idUser = Long.valueOf(id);
-        return ResponseEntity.ok(postService.countPostsForAuthor(idUser));
+        return ResponseEntity.ok(postService.countPostsForAuthor(Integer.valueOf(id)));
+    }
+
+    @GetMapping(value="/feed")
+    public ResponseEntity<List<Post>> getPostsForFeed(@RequestParam Integer id,
+                                                      @RequestParam(name ="offset",defaultValue = "0") Integer pageNo,
+                                                      @RequestParam(name="limit",defaultValue = "5") Integer pageSize) {
+        return ResponseEntity.ok(postService.getPostsForFeed(id, pageNo, pageSize));
     }
 }

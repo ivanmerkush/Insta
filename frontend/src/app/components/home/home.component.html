@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col">
       <div>
-        <img src="api/photos/{{user?.profilePhoto}}"  alt="profilePhoto" class="rounded-circle border"
+        <img src="api/photos/{{this.userViewModel?.profilePhoto}}"  alt="profilePhoto" class="rounded-circle border"
              width="200px" height="200px">
       </div>
     </div>
@@ -11,52 +11,52 @@
         <div class="form-inline">
           <div class="form-group row">
             <div class="nick col-4 mx-sm-3">
-              {{user?.nickname}}
+              {{this.userViewModel?.nickname}}
             </div>
           </div>
         </div>
         <div class="form-inline mt-3">
-          <div class="row">
+          <div class="row w-100">
             <div class="col-sm">
-              <strong>{{numberOfPosts}}</strong> posts
+              <strong>{{this.userViewModel?.numberOfPosts}}</strong> posts
             </div>
             <div class="col-sm">
-              <strong>{{followers}}</strong> subscribers
+              <strong>{{this.userViewModel?.subscribers}}</strong> subscribers
             </div>
             <div class="col-sm">
-              <strong>{{follows}}</strong> subscriptions
+              <strong>{{this.userViewModel?.subscriptions}}</strong> subscriptions
             </div>
           </div>
         </div>
         <div class="form-inline mt-3">
           <div class="row">
             <div class="col-sm-4 text-sm-center">
-              <strong>{{user?.name}}</strong>
+              <strong>{{this.userViewModel?.name}}</strong>
             </div>
             <div class="col-sm-2">
-              {{user?.email}}
+              {{this.userViewModel?.email}}
             </div>
           </div>
         </div>
         <div class="form-inline mt-3">
           <div class="row">
             <div class="col-sm">
-              <p class="text-justify">{{user?.info}}</p>
+              <p class="text-justify">{{this.userViewModel?.info}}</p>
             </div>
           </div>
         </div>
         <div class="_form">
-          <div class="btn-group ml-5 mb-2 " role="group">
-            <button type="subscribe" class="btn btn-outline-dark" (click)="openEdit(template)">EditProfile</button>
+          <div class=" btn-group ml-5 mb-2 " role="group">
+            <button style="width: 200px;" type="subscribe" class="btn btn-outline-dark" (click)="openModal(template1)">EditProfile</button>
             <div class="btn-group" dropdown>
-              <button id="button-basic" dropdownToggle type="button" class="btn btn-outline-dark dropdown-toggle"
+              <button style="width: 200px;" id="button-basic" dropdownToggle type="button" class="btn btn-outline-dark dropdown-toggle"
                       aria-controls="dropdown-basic">
               Bad things<span class="caret"></span>
               </button>
               <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                   role="menu" aria-labelledby="button-basic">
                 <li role="menuitem"><button type="button" class="btn  btn-danger" (click)="exit()">Exit</button></li>
-                <li role="menuitem"><button type="button" class="btn btn-danger">Delete</button></li>
+                <li role="menuitem"><button type="button" class="btn btn-danger" (click)="deleteAccount()">Delete</button></li>
               </ul>
             </div>
           </div>
@@ -71,63 +71,44 @@
   <h4 align="center">Publications:</h4>
   <hr>
   <div>
-    <button style="width: 900px; height: 600px; font-size: 200px;" type="button" class="btn btn-outline-dark" >New!</button>
+    <button style="width: 900px; height: 600px; font-size: 200px;" type="button" class="btn btn-outline-dark" (click)="openModal(template2)">New!</button>
   </div>
-  <form *ngFor="let postPhotoLike of postPhotoLikes">
+  <form *ngFor="let post of posts">
     <div class="form-group">
       <div class="row">
         <div class="col">
           <div class="img_wrap bg-dark">
-            <img src="api/photos/{{postPhotoLike.photo.photoPath}}" alt="not found"/>
+            <img src="api/photos/{{post.photoPath}}" alt="not found"/>
           </div>
         </div>
       </div>
     </div>
     <div class="_form form-inline">
-      <div class="btn-group ml-5 mb-2" role="group">
-        <div *ngIf="postPhotoLike.like;else disliked">
-          <button type="button" class="btn btn-success" (click)="postPhotoLike.like = !postPhotoLike.like">Like</button>
+      <div style="padding-left: 55px;" class="btn-group ml-5 mb-2" role="group">
+        <div *ngIf="post.like;else disliked">
+          <button type="button" class="btn btn-success" (click)="likePost(post)">Like</button>
         </div>
         <ng-template #disliked>
-          <button type="button" class="btn btn-danger" (click)="postPhotoLike.like = !postPhotoLike.like">Dislike</button>
+          <button type="button" class="btn btn-danger" (click)="dislikePost(post)">Dislike</button>
         </ng-template>
         <button type="button" class="btn">Comment</button>
       </div>
     </div>
-    <div style="padding-right: 75%;" class="form-group">
-      <a><strong>{{postPhotoLike.post.likeCount}}</strong> likes</a>
+    <div style="padding-right: 450px;" class="form-group">
+      <div class="row">
+        <div class="col">
+          <a><strong>{{post.likeCount}}</strong> likes</a>
+        </div>
+        <div class="col">
+          <a class="font-weight-light">{{dateToString(post.post.date)}}</a>
+        </div>
+      </div>
     </div>
   </form>
-
 </div>
 
-<!--<ng-template #template>-->
-<!--  <div class="modal-header">-->
-<!--    <h4 class="modal-title pull-left">Edit Profile</h4>-->
-<!--    <button type="button" class="close pull-right"-->
-<!--            aria-label="Close"  (click)="closeModal()">-->
-<!--      <span aria-hidden="true">&times;</span>-->
-<!--    </button>-->
-<!--  </div>-->
-<!--  <div class="modal-body">-->
-<!--    <div class="form-group form-inline">-->
-<!--      <label>Type smthg</label>-->
-<!--      <input class="form-control" name="username" [(ngModel)]="newText" #info="ngModel" />-->
 
-<!--    </div>-->
-<!--    <div style="text-align:center" class="form-group form-inline">-->
-<!--      <label>SelectFile</label>-->
-<!--      <input class="form-control" type="file" (change)="selectFile($event)"/>-->
-<!--    </div>-->
-
-<!--  </div>-->
-<!--  <div class="modal-footer">-->
-<!--    <button [disabled]="!selectedFiles" (click)="upload()" type="button" class="btn btn-outline-dark">Upload</button>-->
-<!--  </div>-->
-<!--</ng-template>-->
-
-<!--modal-->
-<ng-template #template>
+<ng-template #template1>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Edit Profile</h4>
     <button type="button" class="close pull-right"
@@ -138,25 +119,61 @@
   <div class="modal-body">
     <div class="form-group">
       <label>Username</label>
-      <input class="form-control" name="username" [(ngModel)]="user.nickname" #nickname="ngModel" />
+      <input class="form-control" name="username" [(ngModel)]="this.user.nickname" #nickname="ngModel" />
 
     </div>
     <div class="form-group">
       <label>Name</label>
-      <input class="form-control" name="name" [(ngModel)]="user.name" #name="ngModel"/>
+      <input class="form-control" name="name" [(ngModel)]="this.user.name" #name="ngModel"/>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input class="form-control" name="password" [(ngModel)]="this.user.password" #password="ngModel"/>
     </div>
     <div class="form-group">
       <label>E-mail</label>
-      <input class="form-control" name="email" [(ngModel)]="user.email" #email="ngModel"
+      <input class="form-control" name="email" [(ngModel)]="this.user.email" #email="ngModel"
              required pattern="[a-zA-Z0-9_]+@[a-zA-Z_]+?\.[a-zA-Z]{2,4}"/>
     </div>
 
+    <div class="form-group">
+      <label>Info</label>
+      <textarea class="form-control" name="email" [(ngModel)]="this.user.info" #info="ngModel"> </textarea>
+    </div>
+    <div class="form-group">
+      <label>Profile photo</label>
+      <input class="form-control" type="file" (change)="selectFile($event)"/>
+    </div>
   </div>
-<!--  <div class="modal-footer">-->
-<!--    <button type="button" class="btn btn-default"-->
-<!--            [disabled]="nickname.invalid || email.invalid || name.invalid" (click)="editUser()">Edit-->
-<!--    </button>-->
-<!--    <button type="button" class="btn btn-secondary" data-dismiss="modal"  (click)="closeModal()">Close</button>-->
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default"
+            [disabled]="nickname.invalid || email.invalid || name.invalid" (click)="editUser()">Edit
+    </button>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal"  (click)="closeModal()">Close</button>
+  </div>
+</ng-template>
 
-<!--  </div>-->
+<ng-template #template2>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">New Post</h4>
+    <button type="button" class="close pull-right"
+            aria-label="Close"  (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group form-inline">
+      <label>Type smthg</label>
+      <input class="form-control" name="username" [(ngModel)]="newText" #info="ngModel" />
+
+    </div>
+    <div style="text-align:center" class="form-group form-inline">
+      <label>SelectFile</label>
+      <input class="form-control" type="file" (change)="selectFile($event)"/>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button [disabled]="!selectedFiles" (click)="addNewPost()" type="button" class="btn btn-outline-dark">Upload</button>
+  </div>
 </ng-template>

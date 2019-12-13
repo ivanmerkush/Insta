@@ -18,22 +18,24 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("/api/photos")
 public class PhotoController {
-    private PhotoService photoService;
 
-    @Autowired
-    private HttpServletRequest request;
+    private PhotoService photoService;
 
     public PhotoController(PhotoService photoService) {
         this.photoService = photoService;
     }
 
-    @RequestMapping(value = "/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Photo> getPhoto(@PathVariable String id) {
-        Long idPost = Long.valueOf(id);
-        return ResponseEntity.ok(photoService.getPhotoForPost(idPost));
+        return ResponseEntity.ok(photoService.getPhotoForPost(Integer.valueOf(id)));
     }
 
-    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+    @PostMapping()
+    public ResponseEntity<Photo> addPhoto(@RequestBody Photo photo) {
+        return ResponseEntity.ok(photoService.addPhoto(photo));
+    }
+
+    @PostMapping(value = "/uploadFile")
     public @ResponseBody
     void handleFileUpload(@RequestParam("file") MultipartFile file) {
         if (!file.isEmpty()) {
@@ -50,24 +52,3 @@ public class PhotoController {
         }
     }
 }
-
-//    private static final Logger logger = Logger.getLogger(PhotoController.class.getName());
-//    @PostMapping("/upload")
-//    public ResponseEntity<String> uploadData(@RequestParam("file") MultipartFile file) throws Exception {
-//        if (file == null) {
-//            throw new RuntimeException("You must select the a file for uploading");
-//        }
-//        InputStream inputStream = file.getInputStream();
-//        String originalName = file.getOriginalFilename();
-//        String name = file.getName();
-//        String contentType = file.getContentType();
-//        long size = file.getSize();
-//        logger.info("inputStream: " + inputStream);
-//        logger.info("originalName: " + originalName);
-//        logger.info("name: " + name);
-//        logger.info("contentType: " + contentType);
-//        logger.info("size: " + size);
-//        // Do processing with uploaded file data in Service layer
-//        return new ResponseEntity<String>(originalName, HttpStatus.OK);
-//    }
-

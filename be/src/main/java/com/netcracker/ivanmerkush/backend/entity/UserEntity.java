@@ -14,8 +14,6 @@ public class UserEntity {
     private String info;
     private Role role;
     private Status status;
-    private int subscribers;
-    private int subscriptions;
     private String profilePhoto;
 
     @Id
@@ -102,26 +100,6 @@ public class UserEntity {
     }
 
     @Basic
-    @Column(name = "subscribers")
-    public int getSubscribers() {
-        return subscribers;
-    }
-
-    public void setSubscribers(int subscribers) {
-        this.subscribers = subscribers;
-    }
-
-    @Basic
-    @Column(name = "subscriptions")
-    public int getSubscriptions() {
-        return subscriptions;
-    }
-
-    public void setSubscriptions(int subscriptions) {
-        this.subscriptions = subscriptions;
-    }
-
-    @Basic
     @Column(name = "profile_photo")
     public String getProfilePhoto() {
         return profilePhoto;
@@ -144,13 +122,11 @@ public class UserEntity {
                 Objects.equals(info, that.info) &&
                 Objects.equals(role, that.role) &&
                 Objects.equals(status, that.status) &&
-                Objects.equals(subscribers, that.subscribers) &&
-                Objects.equals(subscriptions, that.subscriptions) &&
                 Objects.equals(profilePhoto, that.profilePhoto);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idUser, nickname, name, password, email, info, role, status, subscribers, subscriptions, profilePhoto);
+        return Objects.hash(idUser, nickname, name, password, email, info, role, status, profilePhoto);
     }
 }

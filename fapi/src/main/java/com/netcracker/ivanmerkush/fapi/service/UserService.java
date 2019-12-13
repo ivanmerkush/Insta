@@ -6,11 +6,13 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface UserService {
-    User getUserById(Long id);
+    User getUserById(Integer id);
 
-    List<User> getUsersBySearch(String searchWord);
+    List<User> getUsersBySearch(String searchWord, Integer pageNo, Integer pagesize);
 
     User saveUser(User user);
 
     User getUserByNickname(String name);
+
+    void deleteUser(Integer id);
 }

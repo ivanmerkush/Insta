@@ -4,13 +4,14 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "like", schema = "mydb", catalog = "")
+@Table(name = "like_table", schema = "mydb", catalog = "")
 public class LikeEntity {
     private int idLike;
     private int idPost;
     private int idUser;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_like")
     public int getIdLike() {
         return idLike;

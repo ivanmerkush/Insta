@@ -11,6 +11,7 @@ public class SubEntity {
     private int idHost;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_sub")
     public int getIdSub() {
         return idSub;

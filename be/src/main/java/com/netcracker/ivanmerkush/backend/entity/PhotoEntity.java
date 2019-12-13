@@ -11,6 +11,7 @@ public class PhotoEntity {
     private int idPost;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_photo")
     public int getIdPhoto() {
         return idPhoto;

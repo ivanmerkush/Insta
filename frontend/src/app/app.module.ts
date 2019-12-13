@@ -24,6 +24,9 @@ import { MessagesComponent } from './components/messages/messages.component';
 import { PostsComponent } from './components/posts/posts.component';
 import {PhotoService} from "./services/photo.service";
 import {SubService} from "./services/sub.service";
+import {PostViewModelService} from "./services/postViewModel.service";
+import {UserViewModelService} from "./services/userViewModel.service";
+import {LikeService} from "./services/like.service";
 
 const appRoutes: Routes = [
   {path: "", component: HomeComponent},
@@ -61,7 +64,7 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     BsDatepickerModule.forRoot(),
   ],
-  providers: [UserService, PostService, PhotoService, SubService],
+  providers: [UserService, PostService, PhotoService, SubService, PostViewModelService, UserViewModelService, LikeService],
   exports: [HomeComponent, UserComponent, LoginComponent, HeaderComponent, PostsComponent, FeedComponent],
   bootstrap: [AppComponent]
 })

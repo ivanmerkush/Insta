@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, Output, TemplateRef} from '@angular/core';
-import {User} from "../../modules/userModel";
-import {Hashtag} from "../../modules/hashtagModel";
+import {User} from "../../models/userModel";
+import {Hashtag} from "../../models/hashtagModel";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
 import {forEach} from "@angular/router/src/utils/collection";
 import {Subscription} from "rxjs";
@@ -24,11 +24,11 @@ export class HeaderComponent implements OnInit {
 
 
   constructor(private userService :UserService,
-              private activatedRoute: Router,
+              private router: Router,
               private modalService: BsModalService) { }
 
   ngOnInit() {
-      this.activatedRoute.events.subscribe(value => {console.log(value)});
+      this.router.events.subscribe();
   }
 
   public findEqual() : void {
@@ -40,27 +40,28 @@ export class HeaderComponent implements OnInit {
     })
   }
 
-  public openModal(template: TemplateRef<any>) : void {
-    this.loadSearchResults();
-    if(this.goodvars)
-    {
-      this.notNull = true;
-      this.findEqual();
-      this.modalRef = this.modalService.show(template);
-    }
-    else
-    {
-      this.notNull = false;
-    }
+  public showUserPage(user: User) : void {
+    this.modalRef.hide();
+    this.router.navigate(['/user/' + user.idUser], {});
   }
 
   public closeModal(): void {
     this.modalRef.hide();
   }
 
-  public loadSearchResults() : void {
+  public loadSearchResults(template: TemplateRef<any>) : void {
     this.subscriptions.push(this.userService.getUsersBySearch(this.searchQuery).subscribe(accounts => {
         this.users = accounts as User[];
-    }))
+        if(this.users)
+        {
+          this.notNull = true;
+          this.findEqual();
+          this.modalRef = this.modalService.show(template);
+        }
+        else
+        {
+          this.notNull = false;
+        }
+      }))
   }
 }

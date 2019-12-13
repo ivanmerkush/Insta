@@ -15,15 +15,16 @@ public class UserServiceImpl implements UserService {
     private String backendServerUrl;
 
     @Override
-    public User getUserById(Long id) {
+    public User getUserById(Integer id) {
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject(backendServerUrl + "/api/users/id" + id, User.class);
+        return restTemplate.getForObject(backendServerUrl + "/api/users/id/" + id, User.class);
     }
 
     @Override
-    public List<User> getUsersBySearch(String searchWord) {
+    public List<User> getUsersBySearch(String searchWord, Integer pageNo, Integer pagesize) {
         RestTemplate restTemplate = new RestTemplate();
-        User[] users =  restTemplate.getForObject(backendServerUrl + "/api/users/" + searchWord, User[].class);
+        User[] users =  restTemplate.getForObject(backendServerUrl + "/api/users?searchWord=" + searchWord + "&offset=" + pageNo +"&limit=" + pagesize,
+                User[].class);
         return Arrays.asList(users);
     }
 
@@ -37,5 +38,11 @@ public class UserServiceImpl implements UserService {
     public User getUserByNickname(String name) {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.getForObject(backendServerUrl + "/api/users/login" + name, User.class);
+    }
+
+    @Override
+    public void deleteUser(Integer id) {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.delete(backendServerUrl + "/api/users/" + id);
     }
 }

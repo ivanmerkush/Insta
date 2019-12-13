@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Role, Status, User} from "../../modules/userModel";
+import {Role, Status, User} from "../../models/userModel";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {UserService} from "../../services/user.service";
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
   public loginToAccount(): void {
     localStorage.clear();
     this.subscriptions.push(this.userService.getUserByNickname(this.logNickname).subscribe( account => {
-      var serialUser = JSON.stringify(account as User);
+      let serialUser = JSON.stringify(account as User);
       localStorage.setItem("currentUser", serialUser);
       this.router.navigate(['/home'], {});
     }))
@@ -38,7 +38,8 @@ export class LoginComponent implements OnInit {
 
   public addUserAccount(): void {
     this.user = new User(this.newNickname,this.newName,this.newPassword,this.newEmail,"",
-      Role.CUSTOMER, Status.ACTIVE, 0,0,"D:\\Photo\\defaultProfilePhoto.jpg");
+      Role.CUSTOMER, Status.ACTIVE,"D:/Photo/defaultProfilePhoto.jpg");
     this.subscriptions.push(this.userService.addNewUser(this.user).subscribe());
   }
 }
+

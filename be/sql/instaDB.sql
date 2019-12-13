@@ -106,12 +106,12 @@ CREATE TABLE IF NOT EXISTS `mydb`.`post_hashtag` (
   CONSTRAINT `fk_post_hashtag_post1`
     FOREIGN KEY (`id_post`)
     REFERENCES `mydb`.`post` (`id_post`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_post_hashtag_hashtag1`
     FOREIGN KEY (`id_hashtag`)
     REFERENCES `mydb`.`hashtag` (`id_hashtag`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -193,12 +193,12 @@ CREATE TABLE IF NOT EXISTS `mydb`.`sub` (
   CONSTRAINT `fk_sub_user1`
     FOREIGN KEY (`id_subcriber`)
     REFERENCES `mydb`.`user` (`id_user`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_sub_user2`
     FOREIGN KEY (`id_host`)
     REFERENCES `mydb`.`user` (`id_user`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 

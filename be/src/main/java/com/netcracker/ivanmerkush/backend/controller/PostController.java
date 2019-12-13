@@ -2,16 +2,10 @@ package com.netcracker.ivanmerkush.backend.controller;
 
 import com.netcracker.ivanmerkush.backend.entity.PostEntity;
 import com.netcracker.ivanmerkush.backend.service.PostService;
-import com.netcracker.ivanmerkush.backend.service.impl.PostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -19,22 +13,37 @@ import java.util.Optional;
 public class PostController {
 
     @Autowired
-    private PostServiceImpl postService;
+    private PostService postService;
 
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/{id}")
     public List<PostEntity> getPostsForUser(@PathVariable(name = "id") Integer id) {
         return postService.getPostsForUser(id);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public void deletePost(@PathVariable Integer id) {
         postService.deletePost(id);
     }
 
 
-    @RequestMapping(value ="/count{id}", method = RequestMethod.GET)
+    @PostMapping()
+    public PostEntity savePost(@RequestBody PostEntity post) {
+        return postService.savePost(post);
+    }
+
+
+    @GetMapping(value ="/count{id}")
     public Integer countPosts(@PathVariable(name = "id") Integer id) {
         return postService.countPostsOfAuthor(id);
+    }
+
+    @GetMapping(value="/feed")
+    @ResponseBody
+    public List<PostEntity> getPostsForFeed(@RequestParam Integer id,
+                                           @RequestParam(name ="offset",defaultValue = "0") Integer pageNo,
+                                           @RequestParam(name="limit",defaultValue = "3") Integer pageSize
+                                           ) {
+        return postService.getPostsForFeed(id, pageNo, pageSize);
     }
 }

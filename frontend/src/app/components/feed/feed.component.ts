@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import {Subscription} from "rxjs";
-import {Photo} from "../../modules/photoModel";
-import {Post} from "../../modules/postModel";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
-import {PostService} from "../../services/post.service";
-import {PhotoService} from "../../services/photo.service";
 import {ActivatedRoute} from "@angular/router";
-import {Comment} from "../../modules/commentModel";
-import {PostPhotoLike} from "../../modules/postPhotoLike";
-import {SubService} from "../../services/sub.service";
-import {User} from "../../modules/userModel";
-import {Sub} from "../../modules/subModel";
+import {Comment} from "../../models/commentModel";
+import {User} from "../../models/userModel";
+import {Sub} from "../../models/subModel";
+import {PostViewModelService} from "../../services/postViewModel.service";
+import {PostViewModel} from "../../models/postViewModel";
+import {Like} from "../../models/likeModel";
+import {LikeService} from "../../services/like.service";
 
 @Component({
   selector: 'app-feed',
@@ -21,57 +19,50 @@ export class FeedComponent implements OnInit {
 
   private subscriptions: Subscription[] = [];
   public currentUser: User;
-  public subs: Sub[] = [];
-  public followedUsers: User[] = [];
-  public postPhotoLikes: PostPhotoLike[] = [];
-  public photos: Photo[] = [];
-  public posts: Post[] = [];
+  public posts: PostViewModel[] = [];
 
-  constructor(private postService: PostService,
-              private modalService: BsModalService,
-              private subService: SubService,
-              private photoService: PhotoService,
+  constructor(private modalService: BsModalService,
+              private likeService: LikeService,
+              private postViewModelService: PostViewModelService,
               private activateRoute: ActivatedRoute) { }
 
   public comments: Comment[];
   ngOnInit() {
     this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
     const idOfCustomer = this.currentUser.idUser;
-    this.loadSubscriptions(idOfCustomer);
+    this.loadPostViewModels(idOfCustomer);
   }
 
-  private loadSubscriptions(id: number): void {
-    this.subscriptions.push(this.subService.getSubscriptions(id).subscribe(subs => {
-      this.subs = subs as Sub[];
-      this.subs.forEach(sub => {
-        this.loadPosts(sub.idHost);
-      })
-    }))
+  private loadPostViewModels(id: number): void {
+    // this.subscriptions.push(this.postViewModelService.getFeedPostViewModels(id).subscribe( models => {
+    //   this.posts = models as PostViewModel[];
+    // }))
   }
 
-  private loadPosts(id: number): void {
-    this.subscriptions.push(this.postService.getPosts(id).subscribe( posts => {
-      this.posts = posts as Post[];
-      this.loadPhotos();
+  private dateToString(date: Date) : string {
+    let temp = new Date(date);
+    return temp.getUTCDate() + ":" + temp.getUTCMonth() + ":" + temp.getUTCFullYear();
+  }
+
+  private likePost(postViewModel: PostViewModel): void {
+    this.subscriptions.push(this.likeService.addLike(new Like(this.currentUser.idUser, postViewModel.post.idPost)).subscribe( ()=> {
+      this.updateLikes(postViewModel);
     }));
   }
 
-  private loadPhotos() : void {
-    this.posts.forEach(post => {
-      this.subscriptions.push(this.photoService.getPhotoForPost(post.idPost).subscribe(photo => {
-        this.photos.push(photo as Photo);
-        this.uniteModels(post, photo as Photo);
-      }));
-    })
+  private dislikePost(postViewModel: PostViewModel): void {
+    this.subscriptions.push(this.likeService.deleteLike(postViewModel.like.idLike).subscribe( ()=> {
+      this.updateLikes(postViewModel);
+    }));
   }
 
-  private uniteModels(post: Post, photo: Photo) : void {
-    this.postPhotoLikes.push(new PostPhotoLike(post, photo, true));
-  }
-
-  public dateToString(date: Date) : string {
-    let temp = new Date(date);
-    return temp.getUTCDate() + ":" + temp.getUTCMonth() + ":" + temp.getUTCFullYear();
+  private updateLikes(postViewModel: PostViewModel): void {
+    this.subscriptions.push(this.likeService.getLike(this.currentUser.idUser, postViewModel.post.idPost).subscribe(like => {
+      postViewModel.like = like as Like;
+      this.likeService.countLikes((like as Like).idLike).subscribe(amount => {
+        postViewModel.likeCount = amount as number;
+      });
+    }));
   }
 
 }

@@ -1,21 +1,34 @@
 <div class="container mt-lg-5" align="center">
-  <form *ngFor="let postPhotoLike of postPhotoLikes">
+  <form *ngFor="let post of posts">
+    <div class="form-group form-inline miniprofile">
+      <a [routerLink]="['/user', post.idUser]">
+        <div class="row">
+          <div class="col">
+            <img src="api/photos/{{post.profilePhoto}}"  alt="profilePhoto" class="rounded-circle border"
+                 width="50px" height="50px">
+          </div>
+          <div class="col mt-2">
+            <strong>{{post.nickname}}</strong>
+          </div>
+        </div>
+      </a>
+    </div>
     <div class="form-group">
       <div class="row">
         <div class="col">
           <div class="img_wrap bg-dark">
-            <img src="api/photos/{{postPhotoLike.photo.photoPath}}" alt="not found"/>
+            <img src="api/photos/{{post.photoPath}}" alt="not found"/>
           </div>
         </div>
       </div>
     </div>
     <div class="_form form-inline">
       <div class="btn-group ml-5 mb-2" role="group">
-        <div *ngIf="postPhotoLike.like;else disliked">
-          <button type="button" class="btn btn-success" (click)="postPhotoLike.like = !postPhotoLike.like">Like</button>
+        <div *ngIf="post.like;else disliked">
+          <button type="button" class="btn btn-success" (click)="post.like = !post.like">Like</button>
         </div>
         <ng-template #disliked>
-          <button type="button" class="btn btn-danger" (click)="postPhotoLike.like = !postPhotoLike.like">Dislike</button>
+          <button type="button" class="btn btn-danger" (click)="post.like = !post.like">Dislike</button>
         </ng-template>
         <button type="button" class="btn">Comment</button>
       </div>
@@ -23,10 +36,10 @@
     <div style="padding-right: 50%;" class="form-group">
       <div class="row">
         <div class="col">
-          <a><strong>{{postPhotoLike.post.likeCount}}</strong> likes</a>
+          <a><strong>{{post.post.likeCount}}</strong> likes</a>
         </div>
         <div class="col">
-          <a class="font-weight-light">{{dateToString(postPhotoLike.post.date)}}</a>
+          <a class="font-weight-light">{{dateToString(post.post.date)}}</a>
         </div>
       </div>
     </div>

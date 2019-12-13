@@ -9,15 +9,13 @@ public class User {
     private String info;
     private Role role;
     private Status status;
-    private int subscribers;
-    private int subscriptions;
     private String profilePhoto;
     public User() {
 
     }
 
 
-    public User(int _id, String _nickname, String _name, String _password, String _email, String _bio, Role role, Status status,  int _subscribers, int _subscriptions ,String _userPhoto) {
+    public User(int _id, String _nickname, String _name, String _password, String _email, String _bio, Role role, Status status,String _userPhoto) {
         this.idUser = _id;
         this.nickname = _nickname;
         this.name = _name;
@@ -26,8 +24,6 @@ public class User {
         this.info = _bio;
         this.role = role;
         this.status = status;
-        this.subscribers = _subscribers;
-        this.subscriptions = _subscriptions;
         this.profilePhoto = _userPhoto;
     }
 
@@ -95,22 +91,6 @@ public class User {
         this.status = status;
     }
 
-    public int getSubscribers() {
-        return subscribers;
-    }
-
-    public void setSubscribers(int subscribers) {
-        this.subscribers = subscribers;
-    }
-
-    public int getSubscriptions() {
-        return subscriptions;
-    }
-
-    public void setSubscriptions(int subscriptions) {
-        this.subscriptions = subscriptions;
-    }
-
     public String getProfilePhoto() {
         return profilePhoto;
     }
@@ -130,8 +110,6 @@ public class User {
                 ", info='" + info + '\'' +
                 ", role=" + role +
                 ", status=" + status +
-                ", subscribers=" + subscribers +
-                ", subscriptions=" + subscriptions +
                 ", profilePhoto='" + profilePhoto + '\'' +
                 '}';
     }

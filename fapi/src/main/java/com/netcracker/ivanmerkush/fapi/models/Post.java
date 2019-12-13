@@ -6,8 +6,7 @@ public class Post {
     private int idPost;
     private String text;
     private Date date;
-    private Integer likeCount;
-
+    private int idAuthor;
     public Post() {
 
     }
@@ -36,11 +35,11 @@ public class Post {
         this.date = date;
     }
 
-    public Integer getLikeCount() {
-        return likeCount;
+    public int getIdAuthor() {
+        return idAuthor;
     }
 
-    public void setLikeCount(Integer likeCount) {
-        this.likeCount = likeCount;
+    public void setIdAuthor(int idAuthor) {
+        this.idAuthor = idAuthor;
     }
 }

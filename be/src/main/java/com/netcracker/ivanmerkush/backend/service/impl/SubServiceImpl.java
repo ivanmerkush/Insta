@@ -37,4 +37,14 @@ public class SubServiceImpl implements SubService {
     public List<SubEntity> getSubcriptions(Integer id) {
         return subRepository.getSubEntitiesByIdSubcriber(id);
     }
+
+    @Override
+    public Boolean isBondExists(Integer idHost, Integer idSubscriber) {
+        return subRepository.existsSubEntityByIdHostAndAndIdSubcriber(idHost, idSubscriber);
+    }
+
+    @Override
+    public SubEntity getBond(Integer idHost, Integer idSub) {
+        return subRepository.getSubEntityByIdHostAndAndIdSubcriber(idHost, idSub);
+    }
 }

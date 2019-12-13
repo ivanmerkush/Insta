@@ -10,4 +10,6 @@ public interface SubService {
     Integer countSubscribers(Integer id);
     Integer countSubscriptions(Integer id);
     List<SubEntity> getSubcriptions(Integer id);
+    Boolean isBondExists(Integer idHost, Integer idSubscriber);
+    SubEntity getBond(Integer idHost, Integer idSubscriber);
 }

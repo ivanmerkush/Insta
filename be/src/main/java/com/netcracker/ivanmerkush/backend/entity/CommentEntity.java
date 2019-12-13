@@ -10,8 +10,11 @@ public class CommentEntity {
     private int idComment;
     private String text;
     private Timestamp dateTime;
+    private int idPost;
+    private int idAuthor;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_comment")
     public int getIdComment() {
         return idComment;
@@ -41,18 +44,40 @@ public class CommentEntity {
         this.dateTime = dateTime;
     }
 
+    @Basic
+    @Column(name = "id_post")
+    public int getIdPost() {
+        return idPost;
+    }
+
+    public void setIdPost(int idPost) {
+        this.idPost = idPost;
+    }
+
+    @Basic
+    @Column(name = "id_author")
+    public int getIdAuthor() {
+        return idAuthor;
+    }
+
+    public void setIdAuthor(int idAuthor) {
+        this.idAuthor = idAuthor;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CommentEntity that = (CommentEntity) o;
         return idComment == that.idComment &&
+                idPost == that.idPost &&
+                idAuthor == that.idAuthor &&
                 Objects.equals(text, that.text) &&
                 Objects.equals(dateTime, that.dateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idComment, text, dateTime);
+        return Objects.hash(idComment, text, dateTime, idPost, idAuthor);
     }
 }

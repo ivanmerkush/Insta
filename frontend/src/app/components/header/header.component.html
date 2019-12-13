@@ -3,15 +3,15 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" href="/home">Home</a>
+        <a class="nav-link" [routerLink]="['/home']">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/feed">Feed</a>
+        <a class="nav-link" [routerLink]="['/feed']">Feed</a>
       </li>
       <li>
         <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2 border-dark" name="searchQuery" type="search" [(ngModel)]="searchQuery">
-          <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" (click)="openModal(template)">Search</button>
+          <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" (click)="loadSearchResults(template)">Search</button>
         </form>
       </li>
     </ul>
@@ -32,11 +32,11 @@
   <div class="modal-body">
     <table class="table">
 <!--      <div *ngIf="notNull">-->
-        <tr *ngFor="let result of goodvars">
-          <td scope="row"><a [routerLink]="['/user', result.idUser]">{{result.nickname}}</a></td>
+        <tr *ngFor="let result of users">
+          <td><a (click)="showUserPage(result)">{{result.nickname}}</a></td>
         </tr>
 <!--      </div>-->
-
+        <hr class="mb-2">
     </table>
   </div>
 </ng-template>
