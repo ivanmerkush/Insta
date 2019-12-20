@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Sub} from "../models/subModel";
 import {Like} from "../models/likeModel";
 
 @Injectable()
@@ -18,7 +17,7 @@ export class LikeService {
     return this.http.delete<void>('/api/likes/' + id);
   }
 
-  addLike(like: Like): Observable<Like> {
+  saveLike(like: Like): Observable<Like> {
     return this.http.post<Like>('/api/likes', like);
   }
 

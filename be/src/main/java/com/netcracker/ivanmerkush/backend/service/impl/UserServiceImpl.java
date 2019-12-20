@@ -33,14 +33,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserEntity> getUsersBySearch(String searchWord, Integer pageNo, Integer pagesize) {
-        PageRequest pageable = PageRequest.of(pageNo,pagesize, Sort.by("nickname").ascending());
-        Slice<UserEntity> result =  repository.getUserEntitiesByNicknameContaining(searchWord, pageable);
-        if(result.hasContent()) {
-            return result.getContent();
-        } else {
-            return new ArrayList<>();
-        }
+    public List<UserEntity> getUsersBySearch(String searchWord) {
+        List<UserEntity> result =  repository.getUserEntitiesByNicknameContainingOrderByNicknameAsc(searchWord);
+        return result;
     }
 
     @Override

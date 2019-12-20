@@ -6,20 +6,20 @@ public class PostViewModel {
     private String profilePhoto;
     private Post post;
     private String photoPath;
-//    private int likeCount;
-//    private Like like;
+    private int likeCount;
+    private Like like;
     public PostViewModel() {
 
     }
 
-    public PostViewModel(int idUser, String nickname, String profilePhoto, Post post, String photoPath){// int likeCount, Like like) {
+    public PostViewModel(int idUser, String nickname, String profilePhoto, Post post, String photoPath, int likeCount, Like like) {
         this.idUser = idUser;
         this.nickname = nickname;
         this.profilePhoto = profilePhoto;
         this.post = post;
         this.photoPath = photoPath;
-//        this.likeCount = likeCount;
-//        this.like = like;
+        this.likeCount = likeCount;
+        this.like = like;
     }
 
 
@@ -64,19 +64,19 @@ public class PostViewModel {
         this.photoPath = photoPath;
     }
 
-//    public int getLikeCount() {
-//        return likeCount;
-//    }
-//
-//    public void setLikeCount(int likeCount) {
-//        this.likeCount = likeCount;
-//    }
-//
-//    public Like getLike() {
-//        return like;
-//    }
-//
-//    public void setLike(Like like) {
-//        this.like = like;
-//    }
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public Like getLike() {
+        return like;
+    }
+
+    public void setLike(Like like) {
+        this.like = like;
+    }
 }

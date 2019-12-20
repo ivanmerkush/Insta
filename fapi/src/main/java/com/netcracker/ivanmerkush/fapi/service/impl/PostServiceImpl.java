@@ -1,5 +1,6 @@
 package com.netcracker.ivanmerkush.fapi.service.impl;
 
+import com.netcracker.ivanmerkush.fapi.models.PageModel;
 import com.netcracker.ivanmerkush.fapi.models.Post;
 import com.netcracker.ivanmerkush.fapi.service.PostService;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,13 +17,6 @@ public class PostServiceImpl implements PostService {
     private String backendServerUrl;
 
     @Override
-    public List<Post> getPostsForHome(Integer id, Integer pageNo, Integer pageSize) {
-        RestTemplate restTemplate = new RestTemplate();
-        Post[] posts =  restTemplate.getForObject(backendServerUrl + "/api/posts/home?id" + id + "&offset=" + pageNo + "&limit=" + pageSize, Post[].class);
-        return Arrays.asList(posts);
-    }
-
-    @Override
     public void deletePost(Integer id) {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.delete(backendServerUrl + "/api/posts/" + id);
@@ -30,7 +24,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Integer countPostsForAuthor(Integer id) {
         RestTemplate restTemplate = new RestTemplate();
-        Integer result = restTemplate.getForObject(backendServerUrl + "/api/posts/count" + id, Integer.class);
+        Integer result = restTemplate.getForObject(backendServerUrl + "/api/posts/count/" + id, Integer.class);
         return result;
     }
 
@@ -41,10 +35,27 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getPostsForFeed(Integer id, Integer pageNo, Integer pageSize) {
+    public PageModel getPostsForHome(Integer id, Integer pageNo, Integer pageSize) {
         RestTemplate restTemplate = new RestTemplate();
-        Post[] posts = restTemplate.getForObject(backendServerUrl + "/api/posts/feed?id=" + id + "&offset=" + pageNo + "&limit=" + pageSize, Post[].class);
-        return Arrays.asList(posts);
+        PageModel pageModel =  restTemplate.getForObject(backendServerUrl + "/api/posts/home?id=" + id + "&offset=" + pageNo + "&limit=" + pageSize,
+                PageModel.class);
+        return pageModel;
+    }
+
+    @Override
+    public PageModel getPostsForFeed(Integer id, Integer pageNo, Integer pageSize) {
+        RestTemplate restTemplate = new RestTemplate();
+        PageModel pageModel= restTemplate.getForObject(backendServerUrl + "/api/posts/feed?id=" +id + "&offset=" + pageNo + "&limit=" + pageSize,
+                PageModel.class);
+        return pageModel;
+    }
+
+    @Override
+    public PageModel getPostsForHashtag(Integer id, Integer pageNo, Integer pageSize) {
+        RestTemplate restTemplate = new RestTemplate();
+        PageModel pageModel= restTemplate.getForObject(backendServerUrl + "/api/posts/hashtag?id=" +id + "&offset=" + pageNo + "&limit=" + pageSize,
+                PageModel.class);
+        return pageModel;
     }
 
 }

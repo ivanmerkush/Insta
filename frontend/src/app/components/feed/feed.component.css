@@ -29,3 +29,12 @@ button {
 .miniprofile {
   padding-left: 110px;
 }
+
+._page {
+  padding-left: 40%;
+}
+.content {
+  max-width: 900px;
+  text-align: justify;
+  word-break: break-all;
+}

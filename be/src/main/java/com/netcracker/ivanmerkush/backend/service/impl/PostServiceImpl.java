@@ -1,6 +1,7 @@
 package com.netcracker.ivanmerkush.backend.service.impl;
 
 import com.netcracker.ivanmerkush.backend.entity.PostEntity;
+import com.netcracker.ivanmerkush.backend.model.PageModel;
 import com.netcracker.ivanmerkush.backend.repository.PostRepository;
 import com.netcracker.ivanmerkush.backend.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.websocket.server.PathParam;
-import java.util.List;
 
 @Component
 public class PostServiceImpl implements PostService {
@@ -23,8 +20,10 @@ public class PostServiceImpl implements PostService {
     private PostRepository repository;
 
     @Override
-    public List<PostEntity> getPostsForUser(Integer id) {
-        return repository.getAllFindByIdAuthor(id);
+    public PageModel getPostsForUser(Integer id, Integer pageNo, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, "date"));
+        Page<PostEntity> posts = repository.getAllFindByIdAuthor(id, pageable);
+        return new PageModel((int)posts.getTotalElements(), posts.getContent());
     }
 
     @Override
@@ -40,11 +39,18 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostEntity savePost(PostEntity post) { return repository.save(post); }
 
+    @Override
+    public PageModel getPostsForFeed(@PathParam("idUser") Integer idUser, Integer pageNo, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, "date"));
+        Page<PostEntity> posts = repository.getPostEntitiesByIdAuthor(idUser, pageable);
+        return new PageModel((int)posts.getTotalElements(), posts.getContent());
+    }
 
-    public List<PostEntity> getPostsForFeed(@PathParam("idUser") Integer idUser, Integer pageNo, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
-        List<PostEntity> posts = repository.getPostEntitiesByIdAuthor(idUser, pageable);
-        return posts;
+    @Override
+    public PageModel getPostsByHashtag(@PathParam("idHashtag") Integer idHashtag, Integer pageNo, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, "date"));
+        Page<PostEntity> posts = repository.getPostEntitiesByIdPost(idHashtag, pageable);
+        return new PageModel((int)posts.getTotalElements(), posts.getContent());
     }
 
 

@@ -1,8 +1,10 @@
 package com.netcracker.ivanmerkush.backend.controller;
 
 import com.netcracker.ivanmerkush.backend.entity.PostEntity;
+import com.netcracker.ivanmerkush.backend.model.PageModel;
 import com.netcracker.ivanmerkush.backend.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,9 +18,11 @@ public class PostController {
     private PostService postService;
 
 
-    @GetMapping(value = "/{id}")
-    public List<PostEntity> getPostsForUser(@PathVariable(name = "id") Integer id) {
-        return postService.getPostsForUser(id);
+    @GetMapping(value = "/home")
+    public PageModel getPostsForUser(@RequestParam(name = "id") Integer id,
+                                     @RequestParam(name ="offset",defaultValue = "0") Integer pageNo,
+                                     @RequestParam(name="limit",defaultValue = "4") Integer pageSize) {
+        return postService.getPostsForUser(id, pageNo, pageSize);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -33,17 +37,24 @@ public class PostController {
     }
 
 
-    @GetMapping(value ="/count{id}")
+    @GetMapping(value ="/count/{id}")
     public Integer countPosts(@PathVariable(name = "id") Integer id) {
         return postService.countPostsOfAuthor(id);
     }
 
     @GetMapping(value="/feed")
-    @ResponseBody
-    public List<PostEntity> getPostsForFeed(@RequestParam Integer id,
-                                           @RequestParam(name ="offset",defaultValue = "0") Integer pageNo,
-                                           @RequestParam(name="limit",defaultValue = "3") Integer pageSize
+    public PageModel getPostsForFeed(@RequestParam(name="id") Integer id,
+                                     @RequestParam(name ="offset",defaultValue = "0") Integer pageNo,
+                                     @RequestParam(name="limit",defaultValue = "4") Integer pageSize
                                            ) {
         return postService.getPostsForFeed(id, pageNo, pageSize);
+    }
+
+    @GetMapping(value="/hashtag")
+    public PageModel getPostsByHashtag(@RequestParam(name="id") Integer id,
+                                        @RequestParam(name ="offset",defaultValue = "0") Integer pageNo,
+                                        @RequestParam(name="limit",defaultValue = "4") Integer pageSize
+    ) {
+        return postService.getPostsByHashtag(id, pageNo, pageSize);
     }
 }

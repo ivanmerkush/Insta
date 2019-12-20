@@ -1,11 +1,16 @@
 package com.netcracker.ivanmerkush.backend.service.impl;
 
 import com.netcracker.ivanmerkush.backend.entity.CommentEntity;
+import com.netcracker.ivanmerkush.backend.entity.UserEntity;
+import com.netcracker.ivanmerkush.backend.model.CommentViewModel;
 import com.netcracker.ivanmerkush.backend.repository.CommentRepository;
+import com.netcracker.ivanmerkush.backend.repository.UserRepository;
 import com.netcracker.ivanmerkush.backend.service.CommentService;
+import com.netcracker.ivanmerkush.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -13,13 +18,22 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     CommentRepository commentRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @Override
-    public List<CommentEntity> getCommentsForPost(Integer id) {
-        return commentRepository.getCommentEntitiesByIdPost(id);
+    public List<CommentViewModel> getCommentsForPost(Integer id) {
+        List<CommentViewModel> response = new ArrayList<>();
+        List<CommentEntity> comments = commentRepository.getCommentEntitiesByIdPost(id);
+        comments.forEach(comment -> {
+            UserEntity user = userRepository.getUserEntityByIdUser(comment.getIdAuthor());
+            response.add(new CommentViewModel(user.getNickname(), user.getProfilePhoto(), comment));
+        });
+        return response;
     }
 
     @Override
-    public CommentEntity addComment(CommentEntity comment) {
+    public CommentEntity saveComment(CommentEntity comment) {
         return commentRepository.save(comment);
     }
 

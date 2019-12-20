@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {HttpClient, HttpRequest} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {User} from "../models/userModel";
+import {Router} from "@angular/router";
 
 @Injectable()
 export class  UserService { //todo create interface
@@ -14,7 +15,7 @@ export class  UserService { //todo create interface
     return this.http.post<User>('/api/users/', user);
   }
 
-  addNewUser(user: User) : Observable<User> {
+  saveUser(user: User) : Observable<User> {
     return this.http.post<User>('/api/users/', user);
   }
 
@@ -23,11 +24,11 @@ export class  UserService { //todo create interface
   }
 
   getUsersBySearch(searchWord: string): Observable<User[]> {
-    return this.http.get<User[]>('/api/users/' + searchWord);
+    return this.http.get<User[]>('/api/users/search?request=' + searchWord);
   }
 
   getUserByNickname(name: string): Observable<User> {
-    return this.http.get<User>('/api/users/login' + name);
+    return this.http.get<User>('/api/users/login/' + name);
   }
 
   deleteUser(id: number): Observable<void> {
@@ -39,4 +40,12 @@ export class  UserService { //todo create interface
     formdata.append('file', file);
     return this.http.post<File>('api/users/upload', formdata);
   }
+
+  checkGuest(router: Router) : void {
+    let curUser = JSON.parse(localStorage.getItem("currentUser"));
+    if(!curUser) {
+      router.navigate(['/login'],{});
+    }
+  }
+
 }

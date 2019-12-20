@@ -15,9 +15,9 @@ public class LikeController {
     }
 
     @PostMapping()
-    public ResponseEntity<Like> addLike(@RequestBody Like like) {
+    public ResponseEntity<Like> saveLike(@RequestBody Like like) {
         if (like != null) {
-            return ResponseEntity.ok(likeService.addLike(like));
+            return ResponseEntity.ok(likeService.saveLike(like));
         }
         return null;
     }

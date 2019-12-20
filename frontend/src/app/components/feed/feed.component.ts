@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import {Subscription} from "rxjs";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Comment} from "../../models/commentModel";
 import {User} from "../../models/userModel";
-import {Sub} from "../../models/subModel";
 import {PostViewModelService} from "../../services/postViewModel.service";
 import {PostViewModel} from "../../models/postViewModel";
 import {Like} from "../../models/likeModel";
 import {LikeService} from "../../services/like.service";
+import {PageModel} from "../../models/pageModel";
+import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-feed',
@@ -19,33 +21,35 @@ export class FeedComponent implements OnInit {
 
   private subscriptions: Subscription[] = [];
   public currentUser: User;
-  public posts: PostViewModel[] = [];
-
+  public currentPage: number = 0;
+  public pageModel: PageModel;
   constructor(private modalService: BsModalService,
               private likeService: LikeService,
+              private userService: UserService,
               private postViewModelService: PostViewModelService,
-              private activateRoute: ActivatedRoute) { }
+              private router: Router) { }
 
-  public comments: Comment[];
   ngOnInit() {
+    this.userService.checkGuest(this.router);
     this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
     const idOfCustomer = this.currentUser.idUser;
-    this.loadPostViewModels(idOfCustomer);
+    this.loadPostViewModels(idOfCustomer, this.currentPage);
   }
 
-  private loadPostViewModels(id: number): void {
-    // this.subscriptions.push(this.postViewModelService.getFeedPostViewModels(id).subscribe( models => {
-    //   this.posts = models as PostViewModel[];
-    // }))
+  private loadPostViewModels(id: number, pageNo: number): void {
+    this.subscriptions.push(this.postViewModelService.getFeedPageModel(id, pageNo,4).subscribe(page => {
+      this.pageModel =  page as PageModel;
+    }))
   }
 
   private dateToString(date: Date) : string {
     let temp = new Date(date);
-    return temp.getUTCDate() + ":" + temp.getUTCMonth() + ":" + temp.getUTCFullYear();
+    return temp.getUTCDate() + "." + temp.getUTCMonth() + "." + temp.getUTCFullYear();
   }
 
+
   private likePost(postViewModel: PostViewModel): void {
-    this.subscriptions.push(this.likeService.addLike(new Like(this.currentUser.idUser, postViewModel.post.idPost)).subscribe( ()=> {
+    this.subscriptions.push(this.likeService.saveLike(new Like(this.currentUser.idUser, postViewModel.post.idPost)).subscribe( ()=> {
       this.updateLikes(postViewModel);
     }));
   }
@@ -59,10 +63,14 @@ export class FeedComponent implements OnInit {
   private updateLikes(postViewModel: PostViewModel): void {
     this.subscriptions.push(this.likeService.getLike(this.currentUser.idUser, postViewModel.post.idPost).subscribe(like => {
       postViewModel.like = like as Like;
-      this.likeService.countLikes((like as Like).idLike).subscribe(amount => {
+      this.likeService.countLikes(postViewModel.post.idPost).subscribe(amount => {
         postViewModel.likeCount = amount as number;
       });
     }));
   }
 
+  pageChanged(event: any): void {
+    this.loadPostViewModels(this.currentUser.idUser, event.page - 1);
+    this.currentPage = event.page - 1;
+  }
 }

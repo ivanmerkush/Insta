@@ -1,14 +1,20 @@
 package com.netcracker.ivanmerkush.fapi.models;
 
+import javax.validation.constraints.Max;
 import java.sql.Timestamp;
 
 public class Comment {
     private int idComment;
+    @Max(value = 225, message = "Comment is too big(<225)")
     private String text;
+
     private Timestamp dateTime;
     private int idPost;
     private int idAuthor;
 
+    public Comment() {
+
+    }
 
     public int getIdComment() {
         return idComment;

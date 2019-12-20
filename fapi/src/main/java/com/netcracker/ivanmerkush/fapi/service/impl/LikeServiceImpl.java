@@ -9,11 +9,11 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class LikeServiceImpl implements LikeService {
-    @Value("http:/localhost:8080/")
+    @Value("http://localhost:8080/")
     private String backendServerUrl;
 
     @Override
-    public Like addLike(Like like) {
+    public Like saveLike(Like like) {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.postForEntity(backendServerUrl + "/api/likes", like, Like.class).getBody();
     }
@@ -30,11 +30,10 @@ public class LikeServiceImpl implements LikeService {
         return result;
     }
 
-
     @Override
     public Like getLike(Integer idUser, Integer idPost) {
         RestTemplate restTemplate = new RestTemplate();
-        Like like = restTemplate.getForObject(backendServerUrl + "api/likes/user/" + idUser + "/post/" + idPost,
+        Like like = restTemplate.getForObject(backendServerUrl + "/api/likes/user/" + idUser + "/post/" + idPost,
                 Like.class);
         return like;
     }

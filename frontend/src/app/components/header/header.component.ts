@@ -2,10 +2,10 @@ import {Component, Input, OnInit, Output, TemplateRef} from '@angular/core';
 import {User} from "../../models/userModel";
 import {Hashtag} from "../../models/hashtagModel";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
-import {forEach} from "@angular/router/src/utils/collection";
 import {Subscription} from "rxjs";
 import {UserService} from "../../services/user.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {HashtagService} from "../../services/hashtag.service";
 
 @Component({
   selector: 'app-header',
@@ -16,28 +16,34 @@ export class HeaderComponent implements OnInit {
 
   public notNull: boolean = true;
   public searchQuery: string;
-  public goodvars: User[] = [];
+  public hashtags: Hashtag[];
   public users: User[];
   public modalRef: BsModalRef;
   public subscriptions: Subscription[] = [];
+  public currentUser: User;
+  public hidden : boolean;
 
-
-
-  constructor(private userService :UserService,
+  constructor(private userService: UserService,
+              private hashtageService: HashtagService,
               private router: Router,
+              private activateRoute: ActivatedRoute,
               private modalService: BsModalService) { }
 
   ngOnInit() {
-      this.router.events.subscribe();
+    this.router.events.subscribe(() => {
+        console.log(this.activateRoute.pathFromRoot);
+      }
+    )
+    this.currentUser = JSON.parse(localStorage.getItem("currentItem"));
+    if(this.currentUser != null) {
+      this.hidden = false;
+    }
+    this.router.events.subscribe();
   }
 
-  public findEqual() : void {
-    this.goodvars = [];
-    this.users.forEach(user => {
-      if(user.nickname.includes(this.searchQuery)) {
-        this.goodvars.push(user);
-      }
-    })
+  public showHashtagResult(hashtag: Hashtag) : void {
+    this.modalRef.hide();
+    this.router.navigate(['/hashtag/id/' + hashtag.idHashtag]);
   }
 
   public showUserPage(user: User) : void {
@@ -50,18 +56,35 @@ export class HeaderComponent implements OnInit {
   }
 
   public loadSearchResults(template: TemplateRef<any>) : void {
-    this.subscriptions.push(this.userService.getUsersBySearch(this.searchQuery).subscribe(accounts => {
+    if (this.searchQuery.charAt(0) == '#') {
+      this.loadHashtags(template);
+    } else {
+      this.loadUsers(template);
+    }
+  }
+
+  private loadHashtags(template: TemplateRef<any>) : void {
+    this.subscriptions.push(this.hashtageService.getHashtagsBySearch(this.searchQuery.substring(1)).subscribe(results => {
+      this.hashtags = results as Hashtag[];
+      if (this.hashtags.length != 0) {
+        this.notNull = true;
+      } else {
+        this.notNull = false;
+      }
+      this.modalRef = this.modalService.show(template);
+    }))
+  }
+
+  private loadUsers(template: TemplateRef<any>) : void {
+      this.subscriptions.push(this.userService.getUsersBySearch(this.searchQuery).subscribe(accounts => {
         this.users = accounts as User[];
-        if(this.users)
-        {
+        if(this.users.length != 0) {
           this.notNull = true;
-          this.findEqual();
-          this.modalRef = this.modalService.show(template);
         }
-        else
-        {
+        else {
           this.notNull = false;
         }
+        this.modalRef = this.modalService.show(template);
       }))
   }
 }

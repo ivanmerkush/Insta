@@ -18,7 +18,7 @@ export class PostService{
   }
 
   countPosts(id: number) : Observable<number> {
-    return this.http.get<number>('/api/posts/count' + id);
+    return this.http.get<number>('/api/posts/count/' + id);
   }
 
 }

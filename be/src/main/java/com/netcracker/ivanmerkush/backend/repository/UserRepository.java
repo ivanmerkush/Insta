@@ -13,6 +13,6 @@ import java.util.List;
 @Repository
 public interface UserRepository extends CrudRepository<UserEntity, Integer> {
     UserEntity getUserEntityByIdUser(Integer id);
-    Slice<UserEntity> getUserEntitiesByNicknameContaining(String searchWord, Pageable pageable);
+    List<UserEntity> getUserEntitiesByNicknameContainingOrderByNicknameAsc(String searchWord);
     UserEntity getUserEntityByNickname(String name);
 }

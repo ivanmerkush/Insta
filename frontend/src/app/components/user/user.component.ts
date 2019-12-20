@@ -4,7 +4,7 @@ import {BsModalRef, BsModalService} from "ngx-bootstrap";
 import {UserService} from "../../services/user.service";
 import {Subscription} from "rxjs";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {PostService} from "../../services/post.service";
 import {SubService} from "../../services/sub.service";
 import {Sub} from "../../models/subModel";
@@ -27,7 +27,8 @@ export class UserComponent implements OnInit {
               private subService : SubService,
               private modalService: BsModalService,
               private activateRoute: ActivatedRoute,
-              private loadingService: Ng4LoadingSpinnerService) {
+              private loadingService: Ng4LoadingSpinnerService,
+              private router: Router) {
 
   }
 
@@ -37,6 +38,7 @@ export class UserComponent implements OnInit {
   private subscriptions: Subscription[] =[];
 
   ngOnInit() {
+    this.userService.checkGuest(this.router);
     const id = this.activateRoute.snapshot.params['id'];
     this.loadUserInfo(id);
     this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -69,7 +71,7 @@ export class UserComponent implements OnInit {
       }))
       this.isSubbed = false;
     }));
-  }
+    }
 
   public _openModal(template: TemplateRef<any>): void {
 

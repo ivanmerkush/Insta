@@ -9,7 +9,10 @@ public class HashtagEntity {
     private int idHashtag;
     private String text;
 
+
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_hashtag")
     public int getIdHashtag() {
         return idHashtag;

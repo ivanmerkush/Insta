@@ -1,11 +1,26 @@
 package com.netcracker.ivanmerkush.fapi.models;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 public class User {
     private int idUser;
+    @NotNull(message = "Nickname cannot be null")
+    @Max(value=25, message = "Nickname cannot be so long(<25)")
     private String nickname;
+    @NotNull(message = "Name cannot be null")
     private String name;
+
+    @Max(value=15, message = "Password is too long(<15)")
+    @Min(value = 10, message = "Password is too small(>10)")
     private String password;
+
+    @Email(message = "Email should be valid")
     private String email;
+
+    @Max(value = 225, message="Too much text(no more than 225)")
     private String info;
     private Role role;
     private Status status;

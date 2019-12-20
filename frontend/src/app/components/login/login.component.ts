@@ -19,27 +19,32 @@ export class LoginComponent implements OnInit {
   public newName: string;
   public newEmail: string;
   public newPassword: string;
+  public logUser: User;
   constructor(private router: Router,
               private userService: UserService) { }
 
 
   ngOnInit() {
-
+    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if(currentUser) {
+      this.router.navigate(['/home'], {});
+    }
   }
 
   public loginToAccount(): void {
-    localStorage.clear();
     this.subscriptions.push(this.userService.getUserByNickname(this.logNickname).subscribe( account => {
-      let serialUser = JSON.stringify(account as User);
-      localStorage.setItem("currentUser", serialUser);
+      this.logUser = account as User;
+      localStorage.setItem("currentUser", JSON.stringify(this.logUser));
       this.router.navigate(['/home'], {});
-    }))
+      this.logUser = null;
+      }))
   }
 
   public addUserAccount(): void {
     this.user = new User(this.newNickname,this.newName,this.newPassword,this.newEmail,"",
       Role.CUSTOMER, Status.ACTIVE,"D:/Photo/defaultProfilePhoto.jpg");
-    this.subscriptions.push(this.userService.addNewUser(this.user).subscribe());
+    this.subscriptions.push(this.userService.saveUser(this.user).subscribe());
   }
+
 }
 

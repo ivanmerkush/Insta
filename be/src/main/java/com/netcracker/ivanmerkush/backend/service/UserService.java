@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface UserService {
     UserEntity getUserById(Integer id);
     UserEntity saveUser(UserEntity account);
-    List<UserEntity> getUsersBySearch(String searchWord, Integer pageNo, Integer pageSize);
+    List<UserEntity> getUsersBySearch(String searchWord);
     UserEntity getUserByNickname(String name);
     void deleteUser(Integer id);
 }

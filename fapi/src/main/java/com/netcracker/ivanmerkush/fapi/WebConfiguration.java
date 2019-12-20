@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 public class WebConfiguration extends WebMvcConfigurationSupport {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/api/photos/**")
-                .addResourceLocations("file:///");
+        registry.addResourceHandler("/api/files/**")
+                .addResourceLocations("file:///D:/Photo");
     }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 public interface UserService {
     User getUserById(Integer id);
 
-    List<User> getUsersBySearch(String searchWord, Integer pageNo, Integer pagesize);
+    List<User> getUsersBySearch(String searchWord);
 
     User saveUser(User user);
 

@@ -27,6 +27,10 @@ import {SubService} from "./services/sub.service";
 import {PostViewModelService} from "./services/postViewModel.service";
 import {UserViewModelService} from "./services/userViewModel.service";
 import {LikeService} from "./services/like.service";
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import {HashtagService} from "./services/hashtag.service";
+import { HashtagComponent } from './components/hashtag/hashtag.component';
+import {CommentService} from "./services/comment.service";
 
 const appRoutes: Routes = [
   {path: "", component: HomeComponent},
@@ -35,7 +39,9 @@ const appRoutes: Routes = [
   {path: "user/:id", component: UserComponent},
   {path: "login", component: LoginComponent},
   {path: "signup", component: LoginComponent},
+  {path: "post/:id", component: PostComponent},
   {path: "messages", component: MessagesComponent},
+  {path: "hashtag/id/:id", component: HashtagComponent},
   {path: "**", component: NotFoundComponent}
 ];
 
@@ -50,7 +56,8 @@ const appRoutes: Routes = [
     NotFoundComponent,
     UserComponent,
     MessagesComponent,
-    PostsComponent
+    PostsComponent,
+    HashtagComponent
   ],
   imports: [
     BrowserModule,
@@ -62,10 +69,11 @@ const appRoutes: Routes = [
     ModalModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
+    PaginationModule.forRoot(),
     BsDatepickerModule.forRoot(),
   ],
-  providers: [UserService, PostService, PhotoService, SubService, PostViewModelService, UserViewModelService, LikeService],
-  exports: [HomeComponent, UserComponent, LoginComponent, HeaderComponent, PostsComponent, FeedComponent],
+  providers: [UserService, PostService, PhotoService, SubService, PostViewModelService, UserViewModelService, LikeService, HashtagService, CommentService],
+  exports: [HomeComponent, UserComponent, LoginComponent, HeaderComponent, PostsComponent, FeedComponent, HashtagComponent, PostComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {

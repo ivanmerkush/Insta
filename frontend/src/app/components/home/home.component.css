@@ -25,3 +25,8 @@ button {
   object-fit: cover;
   object-position: 0 0;
 }
+.content {
+  max-width: 900px;
+  text-align: justify;
+  word-break: break-all;
+}

@@ -5,10 +5,8 @@ public class Like {
     private int idPost;
     private int idUser;
 
-    public Like(int idLike, int idPost, int idUser) {
-        this.idLike = idLike;
-        this.idPost = idPost;
-        this.idUser = idUser;
+    public Like() {
+
     }
 
     public int getIdLike() {

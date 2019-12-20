@@ -1,8 +1,9 @@
+<!--<ng4-loading-spinner> </ng4-loading-spinner>-->
 <div class="container mt-lg-5" align="center">
   <div class="row">
     <div class="col">
-      <div>
-        <img src="api/photos/{{this.userViewModel?.profilePhoto}}"  alt="profilePhoto" class="rounded-circle border"
+      <div *ngIf="this.userViewModel != null">
+        <img src="api/files/{{this.userViewModel.profilePhoto}}"  alt="profilePhoto" class="rounded-circle border"
              width="200px" height="200px">
       </div>
     </div>
@@ -51,12 +52,12 @@
             <div class="btn-group" dropdown>
               <button style="width: 200px;" id="button-basic" dropdownToggle type="button" class="btn btn-outline-dark dropdown-toggle"
                       aria-controls="dropdown-basic">
-              Bad things<span class="caret"></span>
+              Other functions<span class="caret"></span>
               </button>
               <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
                   role="menu" aria-labelledby="button-basic">
-                <li role="menuitem"><button type="button" class="btn  btn-danger" (click)="exit()">Exit</button></li>
-                <li role="menuitem"><button type="button" class="btn btn-danger" (click)="deleteAccount()">Delete</button></li>
+                <li role="menuitem"><button type="button" class="btn  btn-danger" (click)="exit()">Log out</button></li>
+                <li role="menuitem"><button type="button" class="btn btn-danger" (click)="deleteAccount()">Delete account</button></li>
               </ul>
             </div>
           </div>
@@ -67,44 +68,58 @@
   <hr>
 </div>
 
-<div class="container" align="center">
+<div class="container " align="center">
   <h4 align="center">Publications:</h4>
   <hr>
-  <div>
-    <button style="width: 900px; height: 600px; font-size: 200px;" type="button" class="btn btn-outline-dark" (click)="openModal(template2)">New!</button>
-  </div>
-  <form *ngFor="let post of posts">
+    <button style="width: 900px; height: 200px; font-size: 80px;" type="button" class="btn btn-outline-dark" (click)="openModal(template2)">+</button>
+  <hr>
+  <form *ngFor="let postModel of pageModel?.page">
     <div class="form-group">
       <div class="row">
         <div class="col">
           <div class="img_wrap bg-dark">
-            <img src="api/photos/{{post.photoPath}}" alt="not found"/>
+            <img src="api/files/{{postModel.photoPath}}" alt="not found"/>
           </div>
         </div>
       </div>
     </div>
     <div class="_form form-inline">
-      <div style="padding-left: 55px;" class="btn-group ml-5 mb-2" role="group">
-        <div *ngIf="post.like;else disliked">
-          <button type="button" class="btn btn-success" (click)="likePost(post)">Like</button>
-        </div>
-        <ng-template #disliked>
-          <button type="button" class="btn btn-danger" (click)="dislikePost(post)">Dislike</button>
-        </ng-template>
-        <button type="button" class="btn">Comment</button>
-      </div>
+          <div style="padding-left: 55px;" class="btn-group ml-5 mb-2" role="group">
+            <div *ngIf="postModel.like == null;else disliked">
+              <button type="button" class="btn btn-success" (click)="likePost(postModel)">Like</button>
+            </div>
+            <ng-template #disliked>
+              <button type="button" class="btn btn-danger" (click)="dislikePost(postModel)">Dislike</button>
+            </ng-template>
+            <button type="button" class="btn">Comment</button>
+            <button type="button" class="btn btn-danger" (click)="deletePost(postModel)">Delete Post</button>
+          </div>
     </div>
-    <div style="padding-right: 450px;" class="form-group">
+    <div class="form-group">
+      <div style="padding-right: 75%;" class="row">
+        <div class="col">
+          <strong>{{postModel.likeCount}}</strong> likes
+        </div>
+      </div>
       <div class="row">
         <div class="col">
-          <a><strong>{{post.likeCount}}</strong> likes</a>
+          <div class="content">
+            <p> <strong>{{postModel.nickname}}</strong>:{{postModel.post.text}}</p>
+          </div>
         </div>
+      </div>
+      <div class="row">
         <div class="col">
-          <a class="font-weight-light">{{dateToString(post.post.date)}}</a>
+          <div style="padding-right: 75%;" class="small font-weight-light">{{dateToString(postModel.post.date)}}</div>
         </div>
       </div>
     </div>
   </form>
+  <div class="row" align="center">
+    <div class="col-xs-12 col-12 ">
+      <pagination [totalItems]="pageModel?.totalElements" [itemsPerPage]="4" (pageChanged)="pageChanged($event)"></pagination>
+    </div>
+  </div>
 </div>
 
 
@@ -127,13 +142,9 @@
       <input class="form-control" name="name" [(ngModel)]="this.user.name" #name="ngModel"/>
     </div>
     <div class="form-group">
-      <label>Password</label>
-      <input class="form-control" name="password" [(ngModel)]="this.user.password" #password="ngModel"/>
-    </div>
-    <div class="form-group">
       <label>E-mail</label>
       <input class="form-control" name="email" [(ngModel)]="this.user.email" #email="ngModel"
-             required pattern="[a-zA-Z0-9_]+@[a-zA-Z_]+?\.[a-zA-Z]{2,4}"/>
+             required pattern="[a-zA-Z0-9_.]+@[a-zA-Z_]+?\.[a-zA-Z]{2,4}"/>
     </div>
 
     <div class="form-group">
@@ -164,7 +175,7 @@
   <div class="modal-body">
     <div class="form-group form-inline">
       <label>Type smthg</label>
-      <input class="form-control" name="username" [(ngModel)]="newText" #info="ngModel" />
+      <textarea class="form-control w-75" name="username" [(ngModel)]="newText" #info="ngModel"> </textarea>
 
     </div>
     <div style="text-align:center" class="form-group form-inline">
@@ -174,6 +185,6 @@
 
   </div>
   <div class="modal-footer">
-    <button [disabled]="!selectedFiles" (click)="addNewPost()" type="button" class="btn btn-outline-dark">Upload</button>
+    <button [disabled]="!selectedFiles" (click)="saveNewPost()" type="button" class="btn btn-outline-dark">Upload</button>
   </div>
 </ng-template>

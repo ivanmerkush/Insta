@@ -9,6 +9,7 @@
         <class>com.netcracker.ivanmerkush.backend.entity.PostEntity</class>
         <class>com.netcracker.ivanmerkush.backend.entity.LikeEntity</class>
         <class>com.netcracker.ivanmerkush.backend.entity.LiketableEntity</class>
+        <class>com.netcracker.ivanmerkush.backend.entity.PostHashtagEntity</class>
         <properties>
             <property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/mydb"/>
             <property name="toplink.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

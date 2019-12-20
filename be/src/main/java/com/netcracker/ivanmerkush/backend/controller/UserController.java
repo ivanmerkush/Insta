@@ -26,17 +26,15 @@ public class UserController {
         return userService.saveUser(account);
     }
 
-    @GetMapping(value = "/{searchWord}")
-    public List<UserEntity> getUsersBySearch(@PathVariable String searchWord,
-                                             @RequestParam(defaultValue = "0") Integer pageNo,
-                                             @RequestParam(defaultValue = "10") Integer pageSize) {
-        return userService.getUsersBySearch(searchWord, pageNo, pageSize);
+    @GetMapping(value = "/search")
+    public List<UserEntity> getUsersBySearch(@RequestParam(name="request") String searchWord) {
+        return userService.getUsersBySearch(searchWord);
     }
 
-    @GetMapping(value = "/login{name}")
-    public ResponseEntity<UserEntity> getUserByNickname(@PathVariable(name = "name") String name) {
+    @GetMapping(value = "/login/{name}")
+    public UserEntity getUserByNickname(@PathVariable(name = "name") String name) {
         UserEntity user = userService.getUserByNickname(name);
-        return ResponseEntity.ok(user);
+        return user;
     }
 
     @DeleteMapping(value ="/{id}")

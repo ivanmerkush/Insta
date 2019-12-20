@@ -1,9 +1,11 @@
 package com.netcracker.ivanmerkush.fapi.models;
 
+import javax.validation.constraints.Max;
 import java.sql.Date;
 
 public class Post {
     private int idPost;
+    @Max(value=225, message = "Too much text(<225)")
     private String text;
     private Date date;
     private int idAuthor;

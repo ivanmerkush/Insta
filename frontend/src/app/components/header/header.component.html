@@ -16,7 +16,7 @@
       </li>
     </ul>
     <div class="nav-item">
-      <a class="nav-link" href="/messages">Messages</a>
+      <div class="nav-link" [routerLink]="['/messages']">Messages</div>
     </div>
   </div>
 </nav>
@@ -31,11 +31,22 @@
   </div>
   <div class="modal-body">
     <table class="table">
-<!--      <div *ngIf="notNull">-->
-        <tr *ngFor="let result of users">
-          <td><a (click)="showUserPage(result)">{{result.nickname}}</a></td>
-        </tr>
-<!--      </div>-->
+      <div *ngIf="notNull; else noCoincidence">
+        <div *ngIf="searchQuery.charAt(0) == '#'; else userSearch">
+          <tr *ngFor="let result of hashtags">
+            <td><a (click)="showHashtagResult(result)">#{{result.text}}</a></td>
+          </tr>
+        </div>
+        <ng-template #userSearch>
+          <tr *ngFor="let result of users">
+            <td ><a (click)="showUserPage(result)"> <img src="api/photos/{{result.profilePhoto}}" alt="profilePhoto" class="rounded-circle border"
+                                                        width="50px" height="50px">{{result.nickname}}</a></td>
+          </tr>
+        </ng-template>
+      </div>
+      <ng-template #noCoincidence>
+        <input class="form-control-plaintext" value="No coincidence">
+      </ng-template>
         <hr class="mb-2">
     </table>
   </div>

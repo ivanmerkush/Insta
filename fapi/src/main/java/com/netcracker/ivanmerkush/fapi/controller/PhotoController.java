@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 @RequestMapping("/api/photos")
 public class PhotoController {
 
+    @Autowired
     private PhotoService photoService;
 
     public PhotoController(PhotoService photoService) {

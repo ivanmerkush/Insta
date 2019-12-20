@@ -1,15 +1,17 @@
 package com.netcracker.ivanmerkush.backend.service;
 
 import com.netcracker.ivanmerkush.backend.entity.PostEntity;
+import com.netcracker.ivanmerkush.backend.model.PageModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
 public interface PostService {
-    List<PostEntity> getPostsForUser(Integer id);
+    PageModel getPostsForUser(Integer id, Integer pageNo, Integer pagesize);
     void deletePost(Integer id);
     Integer countPostsOfAuthor(Integer id);
     PostEntity savePost(PostEntity post);
-    List<PostEntity> getPostsForFeed(Integer id, Integer pageNo, Integer pagesize);
+    PageModel getPostsForFeed(Integer id, Integer pageNo, Integer pagesize);
+    PageModel getPostsByHashtag(Integer idHashtag, Integer pageNo, Integer pagesize);
 }

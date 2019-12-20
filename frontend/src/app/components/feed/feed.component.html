@@ -1,14 +1,14 @@
 <div class="container mt-lg-5" align="center">
-  <form *ngFor="let post of posts">
+  <form *ngFor="let postModel of pageModel?.page">
     <div class="form-group form-inline miniprofile">
-      <a [routerLink]="['/user', post.idUser]">
+      <a [routerLink]="['/user', postModel.idUser]">
         <div class="row">
           <div class="col">
-            <img src="api/photos/{{post.profilePhoto}}"  alt="profilePhoto" class="rounded-circle border"
+            <img [routerLink]="['/post', postModel.post.idPost]" src="api/load/{{postModel.profilePhoto}}" alt="profilePhoto" class="rounded-circle border"
                  width="50px" height="50px">
           </div>
           <div class="col mt-2">
-            <strong>{{post.nickname}}</strong>
+            <strong>{{postModel.nickname}}</strong>
           </div>
         </div>
       </a>
@@ -17,32 +17,45 @@
       <div class="row">
         <div class="col">
           <div class="img_wrap bg-dark">
-            <img src="api/photos/{{post.photoPath}}" alt="not found"/>
+            <img src="api/load/{{postModel.photoPath}}" alt="not found"/>
           </div>
         </div>
       </div>
     </div>
     <div class="_form form-inline">
       <div class="btn-group ml-5 mb-2" role="group">
-        <div *ngIf="post.like;else disliked">
-          <button type="button" class="btn btn-success" (click)="post.like = !post.like">Like</button>
+        <div *ngIf="postModel.like == null;else disliked">
+          <button type="button" class="btn btn-success" (click)="likePost(postModel)">Like</button>
         </div>
         <ng-template #disliked>
-          <button type="button" class="btn btn-danger" (click)="post.like = !post.like">Dislike</button>
+          <button type="button" class="btn btn-danger" (click)="dislikePost(postModel)">Dislike</button>
         </ng-template>
-        <button type="button" class="btn">Comment</button>
+        <button type="button" class="btn" [routerLink]="['/post', postModel.post.idPost]">Comment</button>
       </div>
     </div>
-    <div style="padding-right: 50%;" class="form-group">
-      <div class="row">
+    <div class="form-group">
+      <div style="padding-right: 75%;" class="row">
         <div class="col">
-          <a><strong>{{post.post.likeCount}}</strong> likes</a>
+          <strong>{{postModel.likeCount}}</strong> likes
         </div>
+      </div>
+      <div  class="row">
         <div class="col">
-          <a class="font-weight-light">{{dateToString(post.post.date)}}</a>
+          <div class="content">
+            <strong>{{postModel.nickname}}</strong>: {{postModel.post.text}}
+          </div>
+        </div>
+      </div>
+      <div style="padding-right: 850px;" class="row">
+        <div class="col">
+          <div class="small font-weight-light">{{dateToString(postModel.post.date)}}</div>
         </div>
       </div>
     </div>
   </form>
-
+  <div class="row" align="center">
+    <div class="col-xs-12 col-12 ">
+      <pagination [totalItems]="pageModel?.totalElements" [itemsPerPage]="4" (pageChanged)="pageChanged($event)"></pagination>
+    </div>
+  </div>
 </div>

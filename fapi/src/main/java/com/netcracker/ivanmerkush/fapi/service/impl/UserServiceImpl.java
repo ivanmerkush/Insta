@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Value("${backend.server.url}")
+    @Value("http://localhost:8080/")
     private String backendServerUrl;
 
     @Override
@@ -21,9 +21,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUsersBySearch(String searchWord, Integer pageNo, Integer pagesize) {
+    public List<User> getUsersBySearch(String searchWord) {
         RestTemplate restTemplate = new RestTemplate();
-        User[] users =  restTemplate.getForObject(backendServerUrl + "/api/users?searchWord=" + searchWord + "&offset=" + pageNo +"&limit=" + pagesize,
+        User[] users =  restTemplate.getForObject(backendServerUrl + "/api/users/search?request=" + searchWord,
                 User[].class);
         return Arrays.asList(users);
     }
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByNickname(String name) {
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject(backendServerUrl + "/api/users/login" + name, User.class);
+        return restTemplate.getForObject(backendServerUrl + "/api/users/login/" + name, User.class);
     }
 
     @Override

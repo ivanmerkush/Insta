@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {PostViewModel} from "../models/postViewModel";
-import {User} from "../models/userModel";
+import {PageModel} from "../models/pageModel";
 
 @Injectable()
 export class PostViewModelService {
@@ -10,15 +10,19 @@ export class PostViewModelService {
 
   }
 
-  getFeedPostViewModels(id: number, pageNo: number, pageSize: number) : Observable<PostViewModel[]> {
-    return this.http.get<PostViewModel[]>('/api/page/feed/' + id + '?offset=' + pageNo + '&limit=' + pageSize);
+  getFeedPageModel(id: number, pageNo: number, pageSize: number) : Observable<PageModel> {
+    return this.http.get<PageModel>('/api/page/feed?id=' + id + '&offset=' + pageNo + '&limit=' + pageSize);
   }
 
-  getHomePostViewModels(id: number):  Observable<PostViewModel[]> {
-    return this.http.get<PostViewModel[]>('/api/page/home/' + id);
+  getHomePageModel(id: number, pageNo: number, pageSize: number):  Observable<PageModel> {
+    return this.http.get<PageModel>('/api/page/home?id=' + id + '&offset=' + pageNo + '&limit=' + pageSize);
   }
 
-  addPostViewModel(postViewModel: PostViewModel) : Observable<PostViewModel> {
+  getHashtagPageModel(idHashtag: number, pageNo: number, pageSize: number):  Observable<PageModel> {
+    return this.http.get<PageModel>('/api/page/hashtag?id=' + idHashtag + '&offset=' + pageNo + '&limit=' + pageSize);
+  }
+
+  savePostViewModel(postViewModel: PostViewModel) : Observable<PostViewModel> {
     return this.http.post<PostViewModel>('/api/page/upload',postViewModel);
   }
 }

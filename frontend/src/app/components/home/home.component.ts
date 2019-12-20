@@ -2,11 +2,9 @@ import {Component, OnInit, TemplateRef} from '@angular/core';
 import {User} from "../../models/userModel";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
 import {UserService} from "../../services/user.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {Post} from "../../models/postModel";
-import {Photo} from "../../models/photoModel";
-import {PostPhotoLike} from "../../models/postPhotoLike";
 import {Subscription} from "rxjs";
 import {PostService} from "../../services/post.service";
 import {PhotoService} from "../../services/photo.service";
@@ -17,6 +15,7 @@ import {UserViewModel} from "../../models/userViewModel";
 import {UserViewModelService} from "../../services/userViewModel.service";
 import {LikeService} from "../../services/like.service";
 import {Like} from "../../models/likeModel";
+import {PageModel} from "../../models/pageModel";
 
 @Component({
   selector: 'app-home',
@@ -27,17 +26,15 @@ export class HomeComponent implements OnInit {
 
   currentFile: File;
   selectedFiles: FileList;
+  public currentPage: number = 0;
   public userViewModel: UserViewModel;
   public user: User;
-  public posts: PostViewModel[] = [];
   public subscriptions: Subscription[] = [];
   public modalRef: BsModalRef;
-
+  public pageModel: PageModel;
   public newPostViewModel: PostViewModel;
 
-  public newPost: Post;
-  public newText: string;
-  public newPhotoPath: string;
+  public newText: string = "";
 
   constructor(private userService: UserService,
               private postService: PostService,
@@ -47,38 +44,40 @@ export class HomeComponent implements OnInit {
               private postViewModelService: PostViewModelService,
               private photoService: PhotoService,
               private modalService: BsModalService,
+              private loadingService: Ng4LoadingSpinnerService,
               private router: Router,
   ) {
-
   }
 
   ngOnInit() {
-    this.user = JSON.parse(localStorage.getItem("currentUser"));
-    this.loadYourPageInfo();
-    const idOfCustomer = this.user.idUser;
-    this.loadPostViewModels(idOfCustomer);
+    this.userService.checkGuest(this.router);
+    let temp = JSON.parse(localStorage.getItem("currentUser"));
+    const id = temp.idUser;
+    this.loadYourPageInfo(id);
+    this.loadPostViewModels(id, this.currentPage);
   }
 
-  private loadYourPageInfo() {
-    this.subscriptions.push(this.userViewModelService.getUserViewModel(this.user.idUser).subscribe(model => {
+  private loadYourPageInfo(id: number) {
+    this.subscriptions.push(this.userViewModelService.getUserViewModel(id).subscribe(model => {
       this.userViewModel = model as UserViewModel;
-    }))
-    this.subscriptions.push(this.userService.getUserById(this.user.idUser).subscribe( account => {
-      this.user = account as User;
-      localStorage.clear();
-      localStorage.setItem("currentUser", JSON.stringify(account as User));
+      this.subscriptions.push(this.userService.getUserById(id).subscribe( account => {
+        this.user = account as User;
+        localStorage.clear();
+        localStorage.setItem("currentUser", JSON.stringify(account as User));
+      }));
     }))
   }
 
-  private loadPostViewModels(id: number): void {
-    this.subscriptions.push(this.postViewModelService.getHomePostViewModels(id).subscribe( models => {
-      this.posts = models as PostViewModel[];
+  private loadPostViewModels(id: number, pageNo: number): void {
+    this.subscriptions.push(this.postViewModelService.getHomePageModel(id, pageNo, 4).subscribe(page => {
+      this.pageModel = page as PageModel;
     }))
   }
 
   public dateToString(date: Date) : string {
     let temp = new Date(date);
-    return temp.getUTCDate() + ":" + temp.getUTCMonth() + ":" + temp.getUTCFullYear();
+    let month: number = temp.getMonth();
+    return temp.getUTCDate() + "." + ++month + "." + temp.getFullYear();
   }
 
   private deleteAccount(): void {
@@ -93,7 +92,7 @@ export class HomeComponent implements OnInit {
   }
 
   private likePost(postViewModel: PostViewModel): void {
-    this.subscriptions.push(this.likeService.addLike(new Like(this.user.idUser, postViewModel.post.idPost)).subscribe( ()=> {
+    this.subscriptions.push(this.likeService.saveLike(new Like(this.user.idUser, postViewModel.post.idPost)).subscribe( ()=> {
       this.updateLikes(postViewModel);
     }));
   }
@@ -104,10 +103,19 @@ export class HomeComponent implements OnInit {
     }));
   }
 
+  private deletePost(postviewModel: PostViewModel) : void {
+    this.subscriptions.push(this.postService.deletePost(postviewModel.post.idPost).subscribe(() => {
+      this.loadPostViewModels(this.user.idUser, this.currentPage);
+      this.postService.countPosts(this.user.idUser).subscribe(amount => {
+        this.userViewModel.numberOfPosts = amount as number;
+      })
+    }));
+  }
+
   private updateLikes(postViewModel: PostViewModel): void {
     this.subscriptions.push(this.likeService.getLike(this.user.idUser, postViewModel.post.idPost).subscribe(like => {
       postViewModel.like = like as Like;
-      this.likeService.countLikes((like as Like).idLike).subscribe(amount => {
+      this.likeService.countLikes(postViewModel.post.idPost).subscribe(amount => {
         postViewModel.likeCount = amount as number;
       });
     }));
@@ -115,26 +123,24 @@ export class HomeComponent implements OnInit {
 
   private editUser(): void {
     this.uploadProfilePhoto();
-    this.subscriptions.push(this.userService.addNewUser(this.user).subscribe(() => {
-        this.loadYourPageInfo();
+    this.subscriptions.push(this.userService.saveUser(this.user).subscribe(() => {
+      location.reload();
       }
     ));
     this.closeModal();
   }
 
-  private addNewPost(): void {
-    this.newPost = new Post(this.newText, new Date(), this.user.idUser);
+  private saveNewPost(): void {
     this.currentFile = this.selectedFiles.item(0);
     this.photoService.uploadFile(this.currentFile).subscribe();
-    this.newPostViewModel = new PostViewModel(this.user.idUser, this.newPost, "D:/Photo/" + this.currentFile.name);
-    this.subscriptions.push(this.postViewModelService.addPostViewModel(this.newPostViewModel).subscribe(() => {
-      this.loadPostViewModels(this.user.idUser);
+    this.newPostViewModel = new PostViewModel(this.user.idUser, new Post(this.newText, new Date(), this.user.idUser), this.currentFile.name);
+    this.subscriptions.push(this.postViewModelService.savePostViewModel(this.newPostViewModel).subscribe(() => {
+      this.loadPostViewModels(this.user.idUser, this.currentPage);
       this.postService.countPosts(this.user.idUser).subscribe(amount => {
         this.userViewModel.numberOfPosts = amount as number;
       })
     }));
-    this.modalRef.hide();
-
+    this.closeModal();
   }
 
   selectFile(event) {
@@ -142,6 +148,7 @@ export class HomeComponent implements OnInit {
   }
 
   private closeModal(): void {
+    this.newText = "";
     this.modalRef.hide();
   }
 
@@ -152,10 +159,21 @@ export class HomeComponent implements OnInit {
 
 
   private uploadProfilePhoto(): void {
-    this.currentFile = this.selectedFiles.item(0);
-    if (this.currentFile != null) {
-      this.user.profilePhoto = "D:/Photo/" + this.currentFile.name;
+    if(this.selectedFiles != null) {
+      this.currentFile = this.selectedFiles.item(0);
+      this.user.profilePhoto = this.currentFile.name;
       this.userService.uploadProfilePhoto(this.currentFile).subscribe();
     }
+  }
+  pageChanged(event: any): void {
+    this.loadPostViewModels(this.user.idUser, event.page - 1);let scrollToTop = window.setInterval(() => {
+      let pos = window.pageYOffset;
+      if (pos > 750) {
+        window.scrollTo(0, pos - 200); // how far to scroll on each step
+      } else {
+        window.clearInterval(scrollToTop);
+      }
+    }, 16);
+    this.currentPage = event.page - 1;
   }
 }

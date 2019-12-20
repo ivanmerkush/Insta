@@ -20,11 +20,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(value ="/{searchWord}")
-    public ResponseEntity<List<User>> getUsersBySearch(@PathVariable String searchWord,
-                                                       @RequestParam(defaultValue = "0") Integer pageNo,
-                                                       @RequestParam(defaultValue = "10") Integer pageSize) {
-        return ResponseEntity.ok(userService.getUsersBySearch(searchWord, pageNo, pageSize));
+    @GetMapping(value ="/search")
+    public ResponseEntity<List<User>> getUsersBySearch(@RequestParam(name ="request") String searchWord) {
+        return ResponseEntity.ok(userService.getUsersBySearch(searchWord));
     }
 
     @PostMapping()
@@ -47,9 +45,9 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserById(userId));
     }
 
-    @GetMapping(value = "/login{name}")
-    public ResponseEntity<User> getUserByNickname(@PathVariable String name) {
-        return ResponseEntity.ok(userService.getUserByNickname(name));
+    @GetMapping(value = "/login/{name}")
+    public User getUserByNickname(@PathVariable String name) {
+        return userService.getUserByNickname(name);
     }
 
     @PostMapping(value = "/upload")

@@ -15,8 +15,8 @@ public class LikeController {
 
 
     @PostMapping()
-    public LikeEntity addLike(@RequestBody LikeEntity like) {
-        return likeService.addLike(like);
+    public LikeEntity saveLike(@RequestBody LikeEntity like) {
+        return likeService.saveLike(like);
     }
 
     @DeleteMapping(value = "/{id}")

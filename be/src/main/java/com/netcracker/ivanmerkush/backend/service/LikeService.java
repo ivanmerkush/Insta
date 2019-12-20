@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface LikeService {
     Integer countLikesForPost(Integer idPost);
-    LikeEntity addLike(LikeEntity like);
+    LikeEntity saveLike(LikeEntity like);
     void deleteLike(Integer id);
     LikeEntity getLike(Integer idUser, Integer idPost);
     List<LikeEntity> getAll();

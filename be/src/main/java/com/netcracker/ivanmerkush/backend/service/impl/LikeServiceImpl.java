@@ -20,7 +20,7 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public LikeEntity addLike(LikeEntity like) {
+    public LikeEntity saveLike(LikeEntity like) {
         return likeRepository.save(like);
     }
 
