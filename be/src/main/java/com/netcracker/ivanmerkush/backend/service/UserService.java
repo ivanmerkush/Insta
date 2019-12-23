@@ -12,5 +12,6 @@ public interface UserService {
     UserEntity saveUser(UserEntity account);
     List<UserEntity> getUsersBySearch(String searchWord);
     UserEntity getUserByNickname(String name);
+    UserEntity getUserByNicknameAndPassword(String nickname, String password);
     void deleteUser(Integer id);
 }

@@ -166,7 +166,8 @@ export class HomeComponent implements OnInit {
     }
   }
   pageChanged(event: any): void {
-    this.loadPostViewModels(this.user.idUser, event.page - 1);let scrollToTop = window.setInterval(() => {
+    this.loadPostViewModels(this.user.idUser, event.page - 1);
+    let scrollToTop = window.setInterval(() => {
       let pos = window.pageYOffset;
       if (pos > 750) {
         window.scrollTo(0, pos - 200); // how far to scroll on each step

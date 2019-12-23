@@ -44,5 +44,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserEntity getUserByNicknameAndPassword(String nickname, String password) {
+        return repository.getUserEntityByNicknameAndPassword(nickname,password);
+    }
+
+    @Override
     public void deleteUser(Integer id) { repository.deleteById(id);};
 }

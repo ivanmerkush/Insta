@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -17,6 +18,10 @@ public class PostController {
     @Autowired
     private PostService postService;
 
+    @GetMapping(value="/id/{id}")
+    public Optional<PostEntity> getPostByIdPost(@PathVariable(name="id") Integer id) {
+        return postService.getPostByIdPost(id);
+    }
 
     @GetMapping(value = "/home")
     public PageModel getPostsForUser(@RequestParam(name = "id") Integer id,

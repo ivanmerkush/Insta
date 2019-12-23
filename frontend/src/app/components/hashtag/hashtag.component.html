@@ -5,7 +5,7 @@
       <a [routerLink]="['/user', postModel.idUser]">
         <div class="row">
           <div class="col">
-            <img src="api/load/{{postModel.profilePhoto}}" alt="profilePhoto" class="rounded-circle border"
+            <img src="api/files/{{postModel.profilePhoto}}" alt="profilePhoto" class="rounded-circle border"
                  width="50px" height="50px">
           </div>
           <div class="col mt-2">
@@ -18,7 +18,7 @@
       <div class="row">
         <div class="col">
           <div class="img_wrap bg-dark">
-            <img src="api/load/{{postModel.photoPath}}" alt="not found"/>
+            <img src="api/files/{{postModel.photoPath}}" alt="not found"/>
           </div>
         </div>
       </div>
@@ -31,7 +31,7 @@
         <ng-template #disliked>
           <button type="button" class="btn btn-danger" (click)="dislikePost(postModel)">Dislike</button>
         </ng-template>
-        <button type="button" class="btn">Comment</button>
+        <button type="button" class="btn" [routerLink]="['/post/id', postModel.post.idPost]">Comment</button>
       </div>
     </div>
     <div class="form-group">

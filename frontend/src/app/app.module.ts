@@ -20,7 +20,6 @@ import {LoginComponent} from "./components/login/login.component";
 import {PostService} from "./services/post.service";
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import { MessagesComponent } from './components/messages/messages.component';
 import { PostsComponent } from './components/posts/posts.component';
 import {PhotoService} from "./services/photo.service";
 import {SubService} from "./services/sub.service";
@@ -39,8 +38,7 @@ const appRoutes: Routes = [
   {path: "user/:id", component: UserComponent},
   {path: "login", component: LoginComponent},
   {path: "signup", component: LoginComponent},
-  {path: "post/:id", component: PostComponent},
-  {path: "messages", component: MessagesComponent},
+  {path: "post/id/:id", component: PostComponent},
   {path: "hashtag/id/:id", component: HashtagComponent},
   {path: "**", component: NotFoundComponent}
 ];
@@ -55,7 +53,6 @@ const appRoutes: Routes = [
     PostComponent,
     NotFoundComponent,
     UserComponent,
-    MessagesComponent,
     PostsComponent,
     HashtagComponent
   ],

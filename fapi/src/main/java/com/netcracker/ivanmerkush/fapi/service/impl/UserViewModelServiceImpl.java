@@ -23,6 +23,9 @@ public class UserViewModelServiceImpl implements UserViewModelService {
     @Override
     public UserViewModel getUserViewModel(Integer id) {
         User user = userService.getUserById(id);
+        if(user == null) {
+            return null;
+        }
         int numberOfPosts = postService.countPostsForAuthor(id);
         int subscribers = subService.countSubscribers(id);
         int subscriptions = subService.countSubscriptions(id);

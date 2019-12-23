@@ -15,4 +15,5 @@ public interface UserRepository extends CrudRepository<UserEntity, Integer> {
     UserEntity getUserEntityByIdUser(Integer id);
     List<UserEntity> getUserEntitiesByNicknameContainingOrderByNicknameAsc(String searchWord);
     UserEntity getUserEntityByNickname(String name);
+    UserEntity getUserEntityByNicknameAndPassword(String nickname, String password);
 }

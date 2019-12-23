@@ -71,6 +71,14 @@ export class FeedComponent implements OnInit {
 
   pageChanged(event: any): void {
     this.loadPostViewModels(this.currentUser.idUser, event.page - 1);
+    let scrollToTop = window.setInterval(() => {
+      let pos = window.pageYOffset;
+      if (pos > 200) {
+        window.scrollTo(0, pos - 200); // how far to scroll on each step
+      } else {
+        window.clearInterval(scrollToTop);
+      }
+    }, 16);
     this.currentPage = event.page - 1;
   }
 }

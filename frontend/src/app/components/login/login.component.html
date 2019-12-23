@@ -21,7 +21,11 @@
             Wrong password or missing password
           </div>
         </div>
-        <button type="submit" class="btn btn-primary" (click)="loginToAccount()">Submit</button>
+        <button type="submit" class="btn btn-primary"
+                [disabled]="logPasswordField.invalid || logNicknameField.invalid" (click)="loginToAccount()">Submit</button>
+        <div [hidden]="logUser==null" class="alert alert-danger">
+          Wrong nickname or missing nickname
+        </div>
       </form>
     </div>
   </div>

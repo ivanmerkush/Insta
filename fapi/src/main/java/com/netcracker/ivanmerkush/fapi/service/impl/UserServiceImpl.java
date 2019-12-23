@@ -41,6 +41,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByNicknameAndPassword(String nickname, String password) {
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.getForObject(backendServerUrl + "/api/users/login?nickname=" + nickname + "&password=" + password, User.class);
+    }
+
+    @Override
     public void deleteUser(Integer id) {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.delete(backendServerUrl + "/api/users/" + id);

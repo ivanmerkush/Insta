@@ -36,6 +36,9 @@ export class HashtagComponent implements OnInit {
   private loadPostViewModels(id: number, pageNo: number): void {
     this.subscriptions.push(this.postViewModelService.getHashtagPageModel(id, pageNo,4).subscribe(page => {
       this.pageModel =  page as PageModel;
+      if(this.pageModel.totalElements == 0) {
+        this.router.navigate(['/**'],{});
+      }
     }))
   }
 
@@ -68,6 +71,14 @@ export class HashtagComponent implements OnInit {
 
   pageChanged(event: any): void {
     this.loadPostViewModels(this.currentUser.idUser, event.page - 1);
+    let scrollToTop = window.setInterval(() => {
+      let pos = window.pageYOffset;
+      if (pos > 200) {
+        window.scrollTo(0, pos - 200); // how far to scroll on each step
+      } else {
+        window.clearInterval(scrollToTop);
+      }
+    }, 16);
     this.currentPage = event.page - 1;
   }
 }

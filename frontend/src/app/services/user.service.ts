@@ -20,7 +20,7 @@ export class  UserService { //todo create interface
   }
 
   getUserById(id: number): Observable<User> {
-    return this.http.get<User>('/api/users/id' + id);
+    return this.http.get<User>('/api/users/id/' + id);
   }
 
   getUsersBySearch(searchWord: string): Observable<User[]> {
@@ -29,6 +29,10 @@ export class  UserService { //todo create interface
 
   getUserByNickname(name: string): Observable<User> {
     return this.http.get<User>('/api/users/login/' + name);
+  }
+
+  getUserByNicknameAndPassword(nickname: string, password: string): Observable<User> {
+    return this.http.get<User>('/api/users/login?nickname=' + nickname + '&password=' + password);
   }
 
   deleteUser(id: number): Observable<void> {

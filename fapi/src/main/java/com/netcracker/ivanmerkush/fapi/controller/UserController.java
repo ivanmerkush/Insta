@@ -39,7 +39,7 @@ public class UserController {
         userService.deleteUser(userId);
     }
 
-    @GetMapping(value = "/id{id}")
+    @GetMapping(value = "/id/{id}")
     public ResponseEntity<User> getUserById(@PathVariable String id) {
         Integer userId = Integer.valueOf(id);
         return ResponseEntity.ok(userService.getUserById(userId));
@@ -49,6 +49,14 @@ public class UserController {
     public User getUserByNickname(@PathVariable String name) {
         return userService.getUserByNickname(name);
     }
+
+    @GetMapping(value = "/login")
+    public User getUserByNicknameAndPassword(@RequestParam(name = "nickname") String nickname,
+                                             @RequestParam(name ="password") String password) {
+        return userService.getUserByNicknameAndPassword(nickname, password);
+    }
+
+
 
     @PostMapping(value = "/upload")
     public void handleFileUpload(@RequestParam("file") MultipartFile file) {

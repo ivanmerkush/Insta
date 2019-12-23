@@ -37,6 +37,12 @@ public class UserController {
         return user;
     }
 
+    @GetMapping(value= "/login")
+    public UserEntity getUserByNicknameAndPassword(@RequestParam(name = "nickname") String nickname,
+                                                   @RequestParam(name = "password") String password) {
+        return userService.getUserByNicknameAndPassword(nickname, password);
+    }
+
     @DeleteMapping(value ="/{id}")
     public void deleteUser(@PathVariable(name="id") Integer id) {
         userService.deleteUser(id);

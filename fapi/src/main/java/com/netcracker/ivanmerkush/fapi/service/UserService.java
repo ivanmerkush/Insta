@@ -14,5 +14,7 @@ public interface UserService {
 
     User getUserByNickname(String name);
 
+    User getUserByNicknameAndPassword(String nickname, String password);
+
     void deleteUser(Integer id);
 }

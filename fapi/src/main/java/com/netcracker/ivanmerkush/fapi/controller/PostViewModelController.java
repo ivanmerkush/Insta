@@ -1,6 +1,7 @@
 package com.netcracker.ivanmerkush.fapi.controller;
 
 import com.netcracker.ivanmerkush.fapi.models.PageViewModel;
+import com.netcracker.ivanmerkush.fapi.models.Post;
 import com.netcracker.ivanmerkush.fapi.models.PostViewModel;
 import com.netcracker.ivanmerkush.fapi.service.PostViewModelService;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,15 @@ public class PostViewModelController {
                                                          @RequestParam(name ="offset",defaultValue = "0") Integer pageNo,
                                                          @RequestParam(name="limit",defaultValue = "4") Integer pageSize) {
         return ResponseEntity.ok(postViewModelService.getHashtagPosts(id, pageNo, pageSize));
+    }
+
+    @GetMapping(value = "/user/{idUser}/post/{idPost}")
+    public ResponseEntity<PostViewModel> getPostByIdPost(@PathVariable(name="idUser") Integer idUser, @PathVariable(name="idPost") Integer idPost) {
+        PostViewModel postViewModel = postViewModelService.getPostByIdPost(idUser, idPost);
+        if(postViewModel != null) {
+            return ResponseEntity.ok(postViewModel);
+        }
+         return null;
     }
     @PostMapping(value ="/upload")
     public void addPost(@RequestBody PostViewModel postViewModel) {

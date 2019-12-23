@@ -1,24 +1,73 @@
-<div class="container mt-lg-5" align="center">
-  <div class="row">
-    <div class="col post">
-      <div class="img_wrap bg-dark">
-        <img src="/api/load/Autumn.jpg" alt="not found"/>
-      </div>
-    </div>
-    <div align="left" class="col pt-2 comments border border-dark bg-white">
-      <div class="row w-100">
-        <div class="col-2">
-          <img src="/api/load/Nemiga.jpg" alt="profilePhoto" class="rounded-circle border"
-               width="50px" height="50px">
+<div *ngIf="postViewModel != null; else load">
+  <div class="container mt-lg-5" align="center">
+      <div class="row">
+      <div class="col post">
+        <div class="img_wrap bg-dark">
+            <img src="/api/files/{{postViewModel.photoPath}}" alt="not found"/>
         </div>
-        <div class="col">
-          <div class="content">
-            <strong>Example</strong>: sdasdasdasdasdasdsasdasdasdasdasdasdsasdasdasdasdasdasdsasdasdasdasdasdasdsasdasdasdasdasdasdsa
+        <div style="padding-left: 15px;" class="row">
+          <div *ngIf="postViewModel.like == null;else disliked">
+            <button style="width: 200px;" type="button" class="btn btn-success" (click)="likePost(postViewModel)">Like</button>
+          </div>
+          <ng-template #disliked>
+            <button style="width: 200px;" type="button" class="btn btn-danger" (click)="dislikePost(postViewModel)">Dislike</button>
+          </ng-template>
+        </div>
+      </div>
+      <div style="margin-left: 70px; height: 540px;" align="left" class="col pt-2 comments border border-dark bg-white">
+        <div class="row w-100">
+          <div class="col-2">
+            <div *ngIf="postViewModel != null">
+              <img [routerLink]="['/user', postViewModel.idUser]" src="/api/files/{{postViewModel.profilePhoto}}" alt="profilePhoto" class="rounded-circle border"
+                 width="50px" height="50px">
+            </div>
+          </div>
+          <div class="col">
+            <div class="content" [routerLink]="['/user', postViewModel.idUser]">
+              <strong>{{postViewModel.nickname}}</strong>: {{postViewModel.post.text}}
+            </div>
+            <div class="col">
+              <div class="small font-weight-light">{{dateToString(postViewModel.post.date)}}</div>
+            </div>
+          </div>
+        </div>
+        <hr class="border-dark">
+          <div style="min-height: 350px; overflow-y:auto;">
+            <div *ngIf="comments != null">
+              <div *ngFor="let commentModel of comments">
+                <div class="row w-100">
+                  <div class="col-2  comments">
+                      <img src="/api/files/{{commentModel.profilePhoto}}" alt="profilePhoto" class="rounded-circle border"
+                           width="50px" height="50px">
+                  </div>
+                  <div class="col">
+                    <div class="content" [routerLink]="['/user', commentModel.idAuthor]">
+                      <strong>{{commentModel.nickname}}</strong>: {{commentModel.text}}
+                    </div>
+                    <div class="col">
+                      <div class="small font-weight-light">{{dateToString(commentModel.date)}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <hr class="border-dark">
+        <div  class="d-flex align-items-end">
+          <div class="row w-100">
+            <div class="col-6">
+              <textarea style="width: 250px;height: 50px; overflow-y: auto;" placeholder="Leave a comment" [(ngModel)]="newText" #textField="ngModel" required></textarea>
+            </div>
+            <div style="padding-left: 100px;" class="col-2">
+              <button style="width:85px; padding-right: 80px; height:50px;" type="button" class="btn btn-white border-dark"
+                      [disabled]="textField.invalid ||textField.untouched" (click)="saveComment()">Comment</button>
+            </div>
           </div>
         </div>
       </div>
-      <hr class="border-dark">
-
     </div>
   </div>
 </div>
+<ng-template #load>
+  <ng4-loading-spinner></ng4-loading-spinner>
+</ng-template>

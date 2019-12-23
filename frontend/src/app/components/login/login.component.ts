@@ -32,12 +32,16 @@ export class LoginComponent implements OnInit {
   }
 
   public loginToAccount(): void {
-    this.subscriptions.push(this.userService.getUserByNickname(this.logNickname).subscribe( account => {
+    this.subscriptions.push(this.userService.getUserByNicknameAndPassword(this.logNickname, this.logPassword).subscribe( account => {
       this.logUser = account as User;
-      localStorage.setItem("currentUser", JSON.stringify(this.logUser));
-      this.router.navigate(['/home'], {});
-      this.logUser = null;
-      }))
+      if(this.logUser == null) {
+
+      }
+      else {
+        localStorage.setItem("currentUser", JSON.stringify(this.logUser));
+        this.router.navigate(['/home'], {});
+      }
+    }))
   }
 
   public addUserAccount(): void {

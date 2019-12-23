@@ -1,3 +1,7 @@
+.img_wrap {
+  width: 800px;
+  height: 540px;
+}
 
 .img_wrap img {
    width: 100%;

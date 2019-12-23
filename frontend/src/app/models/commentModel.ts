@@ -1,14 +1,13 @@
 export class Comment{
   idComment: number;
-  text: number;
-  date: Date;
+  text: string;
+  dateTime: Date;
   idAuthor: number;
   idPost: number;
 
-  constructor(idComment: number, text: number, date: Date, idAuthor: number, idPost: number) {
-    this.idComment = idComment;
+  constructor(text: string, date: Date, idAuthor: number, idPost: number) {
     this.text = text;
-    this.date = date;
+    this.dateTime = date;
     this.idAuthor = idAuthor;
     this.idPost = idPost;
   }

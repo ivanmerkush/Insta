@@ -10,6 +10,6 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/api/files/**")
-                .addResourceLocations("file:///D:/Photo");
+                .addResourceLocations("file:///D:/Photo/");
     }
 }

@@ -2,19 +2,29 @@ package com.netcracker.ivanmerkush.backend.model;
 
 import com.netcracker.ivanmerkush.backend.entity.CommentEntity;
 
+import java.util.Date;
+
 public class CommentViewModel {
     private String nickname;
     private String profilePhoto;
-    private CommentEntity comment;
+    private int idComment;
+    private String text;
+    private Date date;
+    private int idAuthor;
+    private int idPost;
 
     public CommentViewModel() {
 
     }
 
-    public CommentViewModel(String nickname, String profilePhoto, CommentEntity comment) {
+    public CommentViewModel(String nickname, String profilePhoto, int idComment, String text, Date date, int idAuthor, int idPost) {
         this.nickname = nickname;
         this.profilePhoto = profilePhoto;
-        this.comment = comment;
+        this.idComment = idComment;
+        this.text = text;
+        this.date = date;
+        this.idAuthor = idAuthor;
+        this.idPost = idPost;
     }
 
     public String getNickname() {
@@ -33,11 +43,43 @@ public class CommentViewModel {
         this.profilePhoto = profilePhoto;
     }
 
-    public CommentEntity getComment() {
-        return comment;
+    public int getIdComment() {
+        return idComment;
     }
 
-    public void setComment(CommentEntity comment) {
-        this.comment = comment;
+    public void setIdComment(int idComment) {
+        this.idComment = idComment;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public int getIdAuthor() {
+        return idAuthor;
+    }
+
+    public void setIdAuthor(int idAuthor) {
+        this.idAuthor = idAuthor;
+    }
+
+    public int getIdPost() {
+        return idPost;
+    }
+
+    public void setIdPost(int idPost) {
+        this.idPost = idPost;
     }
 }

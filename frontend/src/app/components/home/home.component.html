@@ -91,7 +91,7 @@
             <ng-template #disliked>
               <button type="button" class="btn btn-danger" (click)="dislikePost(postModel)">Dislike</button>
             </ng-template>
-            <button type="button" class="btn">Comment</button>
+            <button type="button" class="btn" [routerLink]="['/post/id', postModel.post.idPost]">Comment</button>
             <button type="button" class="btn btn-danger" (click)="deletePost(postModel)">Delete Post</button>
           </div>
     </div>

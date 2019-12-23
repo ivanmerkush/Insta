@@ -25,4 +25,8 @@ export class PostViewModelService {
   savePostViewModel(postViewModel: PostViewModel) : Observable<PostViewModel> {
     return this.http.post<PostViewModel>('/api/page/upload',postViewModel);
   }
+
+  getPostViewModelByIdPost(idUser: number, idPost: number): Observable<PostViewModel> {
+    return this.http.get<PostViewModel>('/api/page/user/' + idUser + '/post/' + idPost);
+  }
 }

@@ -30,10 +30,6 @@ export class HeaderComponent implements OnInit {
               private modalService: BsModalService) { }
 
   ngOnInit() {
-    this.router.events.subscribe(() => {
-        console.log(this.activateRoute.pathFromRoot);
-      }
-    )
     this.currentUser = JSON.parse(localStorage.getItem("currentItem"));
     if(this.currentUser != null) {
       this.hidden = false;

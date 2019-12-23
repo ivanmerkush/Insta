@@ -58,4 +58,11 @@ public class PostServiceImpl implements PostService {
         return pageModel;
     }
 
+    @Override
+    public Post getPostByIdPost(Integer idPost) {
+        RestTemplate restTemplate = new RestTemplate();
+        Post post = restTemplate.getForObject(backendServerUrl +"/api/posts/id/" + idPost, Post.class);
+        return post;
+    }
+
 }

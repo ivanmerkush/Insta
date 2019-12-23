@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.server.PathParam;
+import java.util.Optional;
 
 @Component
 public class PostServiceImpl implements PostService {
@@ -29,6 +30,11 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deletePost(Integer id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public Optional<PostEntity> getPostByIdPost(Integer idPost) {
+        return repository.findById(idPost);
     }
 
     @Override

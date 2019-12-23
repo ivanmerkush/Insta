@@ -8,9 +8,11 @@ import com.netcracker.ivanmerkush.backend.repository.UserRepository;
 import com.netcracker.ivanmerkush.backend.service.CommentService;
 import com.netcracker.ivanmerkush.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -24,10 +26,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<CommentViewModel> getCommentsForPost(Integer id) {
         List<CommentViewModel> response = new ArrayList<>();
-        List<CommentEntity> comments = commentRepository.getCommentEntitiesByIdPost(id);
+        List<CommentEntity> comments = commentRepository.getCommentEntitiesByIdPost(id, Sort.by("dateTime").descending());
         comments.forEach(comment -> {
             UserEntity user = userRepository.getUserEntityByIdUser(comment.getIdAuthor());
-            response.add(new CommentViewModel(user.getNickname(), user.getProfilePhoto(), comment));
+            response.add(new CommentViewModel(user.getNickname(), user.getProfilePhoto(), comment.getIdComment(), comment.getText(), new Date(comment.getDateTime().getTime()), comment.getIdAuthor(), comment.getIdPost()));
         });
         return response;
     }

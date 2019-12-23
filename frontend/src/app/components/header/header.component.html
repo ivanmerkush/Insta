@@ -39,7 +39,7 @@
         </div>
         <ng-template #userSearch>
           <tr *ngFor="let result of users">
-            <td ><a (click)="showUserPage(result)"> <img src="api/photos/{{result.profilePhoto}}" alt="profilePhoto" class="rounded-circle border"
+            <td ><a (click)="showUserPage(result)"> <img src="api/files/{{result.profilePhoto}}" alt="profilePhoto" class="rounded-circle border"
                                                         width="50px" height="50px">{{result.nickname}}</a></td>
           </tr>
         </ng-template>

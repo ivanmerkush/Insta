@@ -9,5 +9,6 @@ public interface PostViewModelService {
     PageViewModel getFeedPosts(Integer idCurrentUser, Integer pageNo, Integer pageSize);
     PageViewModel getHomePosts(Integer idUser, Integer pageNo, Integer pageSize);
     PageViewModel getHashtagPosts(Integer idHashtag, Integer pageNo, Integer pageSize);
+    PostViewModel getPostByIdPost(Integer idUser, Integer idPost);
     void savePost(PostViewModel postViewModel);
 }

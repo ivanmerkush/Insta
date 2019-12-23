@@ -12,4 +12,5 @@ public interface PostService {
     Post savePost(Post post);
     PageModel getPostsForFeed(Integer id, Integer pageNo, Integer pageSize);
     PageModel getPostsForHashtag(Integer id, Integer pageNo, Integer pageSize);
+    Post getPostByIdPost(Integer idPost);
 }

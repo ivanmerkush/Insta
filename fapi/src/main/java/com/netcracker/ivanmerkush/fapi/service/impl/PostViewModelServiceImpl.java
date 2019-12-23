@@ -65,6 +65,7 @@ public class PostViewModelServiceImpl implements PostViewModelService {
     public PageViewModel getHashtagPosts(Integer idHashtag, Integer pageNo, Integer pageSize) {
         List<PostViewModel> postViewModels = new ArrayList<>();
         PageModel pageModel = postService.getPostsForHashtag(idHashtag, pageNo, pageSize);
+
         pageModel.getPage().forEach(post -> {
             int idPost = post.getIdPost();
             String photo = photoService.getPhotoForPost(idPost).getPhotoPath();
@@ -76,6 +77,22 @@ public class PostViewModelServiceImpl implements PostViewModelService {
         });
         PageViewModel pageViewModel = new PageViewModel(pageModel.getTotalElements(), postViewModels);
         return pageViewModel;
+    }
+
+    @Override
+    public PostViewModel getPostByIdPost(Integer idUser, Integer idPost) {
+        PostViewModel postViewModel;
+        Post post = postService.getPostByIdPost(idPost);
+        if(post == null) {
+            return null;
+        }
+        String photo = photoService.getPhotoForPost(idPost).getPhotoPath();
+        User user = userService.getUserById(post.getIdAuthor());
+        int likeCount = likeService.countLikesForPost(idPost);
+        Like like = likeService.getLike(idUser, idPost);
+        postViewModel = new PostViewModel(user.getIdUser(), user.getNickname(),
+                user.getProfilePhoto(), post, photo, likeCount, like);
+        return postViewModel;
     }
 
     @Override
