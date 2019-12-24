@@ -96,6 +96,32 @@ public class PostViewModelServiceImpl implements PostViewModelService {
     }
 
     @Override
+    public List<PostViewModel> getMostLikedPosts() {
+        List<Post> posts = postService.getAllPosts();
+        List<PostViewModel> list = new ArrayList<>();
+        int best = 0;
+        for (Post post: posts) {
+            int idPost = post.getIdPost();
+            String photo = photoService.getPhotoForPost(idPost).getPhotoPath();
+            User user = userService.getUserById(post.getIdAuthor());
+            int likeCount = likeService.countLikesForPost(idPost);
+            if(best < likeCount) {
+                best = likeCount;
+            }
+            Like like = likeService.getLike(user.getIdUser(), idPost);
+            list.add(new PostViewModel(user.getIdUser(), user.getNickname(),
+                    user.getProfilePhoto(), post, photo, likeCount, like));
+        }
+        List<PostViewModel> result = new ArrayList<>();
+        for( PostViewModel postViewModel: list) {
+            if(postViewModel.getLikeCount() == best) {
+                result.add(postViewModel);
+            }
+        };
+        return result;
+    }
+
+    @Override
     public void savePost(PostViewModel postViewModel) {
         Post newPost = postViewModel.getPost();
         Post post = postService.savePost(newPost);

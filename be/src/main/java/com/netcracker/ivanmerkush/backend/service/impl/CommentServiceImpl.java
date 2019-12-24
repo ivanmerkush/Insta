@@ -26,7 +26,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<CommentViewModel> getCommentsForPost(Integer id) {
         List<CommentViewModel> response = new ArrayList<>();
-        List<CommentEntity> comments = commentRepository.getCommentEntitiesByIdPost(id, Sort.by("dateTime").descending());
+        List<CommentEntity> comments = commentRepository.getCommentEntitiesByIdPost(id, Sort.by("dateTime").ascending());
         comments.forEach(comment -> {
             UserEntity user = userRepository.getUserEntityByIdUser(comment.getIdAuthor());
             response.add(new CommentViewModel(user.getNickname(), user.getProfilePhoto(), comment.getIdComment(), comment.getText(), new Date(comment.getDateTime().getTime()), comment.getIdAuthor(), comment.getIdPost()));

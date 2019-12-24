@@ -13,4 +13,5 @@ public interface PostService {
     PageModel getPostsForFeed(Integer id, Integer pageNo, Integer pageSize);
     PageModel getPostsForHashtag(Integer id, Integer pageNo, Integer pageSize);
     Post getPostByIdPost(Integer idPost);
+    List<Post> getAllPosts();
 }

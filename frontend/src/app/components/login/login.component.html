@@ -9,7 +9,7 @@
             <input type="email" class="form-control" id="loginEmail" [(ngModel)]="logNickname" name="logname" #logNicknameField="ngModel" required placeholder="Nickname">
           </div>
           <div [hidden]="logNicknameField.valid || logNicknameField.untouched" class="alert alert-danger">
-            Wrong nickname or missing nickname
+            Missing nickname
           </div>
         </div>
         <div class="form-group row">
@@ -18,13 +18,13 @@
             <input type="password" class="form-control" id="loginPassword" [(ngModel)]="logPassword" name="logpassword" #logPasswordField="ngModel" required placeholder="Password">
           </div>
           <div [hidden]="logPasswordField.valid || logPasswordField.untouched" class="alert alert-danger">
-            Wrong password or missing password
+            Missing password
           </div>
         </div>
         <button type="submit" class="btn btn-primary"
                 [disabled]="logPasswordField.invalid || logNicknameField.invalid" (click)="loginToAccount()">Submit</button>
-        <div [hidden]="logUser==null" class="alert alert-danger">
-          Wrong nickname or missing nickname
+        <div id="collapseBasic" [collapse]="isCollapsedLog">
+          <div class="bg-danger text-dark w-50">Wrong nickname or password</div>
         </div>
       </form>
     </div>
@@ -38,7 +38,7 @@
           <div class="col-sm-10">
             <input class="form-control mr-sm-2" type="nickname" id="regNickname" [(ngModel)]="newNickname" name="nick" #regNicknameField="ngModel" required placeholder="Nickname">
           </div>
-          <div [hidden]="logNicknameField.valid || logNicknameField.untouched" class="alert alert-danger">
+          <div [hidden]="regNicknameField.valid || regNicknameField.untouched" class="alert alert-danger">
             Wrong nickname or missing nickname
           </div>
         </div>
@@ -73,7 +73,14 @@
           </div>
         </div>
         <button type="SignUp" class="btn btn-primary"
-                [disabled]="logNicknameField.invalid || emailField.invalid || regPasswordField.invalid || nameField.invalid" (click)="addUserAccount()">Sign Up</button>
+                [disabled]="regNicknameField.invalid || emailField.invalid || regPasswordField.invalid || nameField.invalid" (click)="saveUserAccount()">Sign Up</button>
+
+        <div id="collapse" [collapse]="isCollapsedReg">
+          <div *ngIf="isSigned; else notSigned" class="bg-success text-dark w-50">Registration completed</div>
+          <ng-template #notSigned>
+            <div class="bg-danger text-dark w-50">User with this nickname already exists</div>
+          </ng-template>
+        </div>
       </form>
     </div>
   </div>

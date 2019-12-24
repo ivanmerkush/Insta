@@ -19,6 +19,7 @@ export class HashtagComponent implements OnInit {
 
   private subscriptions: Subscription[] = [];
   public currentUser: User;
+  public postExist: boolean;
   public currentPage: number = 0;
   public pageModel: PageModel;
   constructor(private likeService: LikeService,
@@ -37,7 +38,10 @@ export class HashtagComponent implements OnInit {
     this.subscriptions.push(this.postViewModelService.getHashtagPageModel(id, pageNo,4).subscribe(page => {
       this.pageModel =  page as PageModel;
       if(this.pageModel.totalElements == 0) {
-        this.router.navigate(['/**'],{});
+        this.postExist = false;
+      }
+      else {
+        this.postExist = true;
       }
     }))
   }

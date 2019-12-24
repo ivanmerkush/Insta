@@ -10,5 +10,6 @@ public interface PostViewModelService {
     PageViewModel getHomePosts(Integer idUser, Integer pageNo, Integer pageSize);
     PageViewModel getHashtagPosts(Integer idHashtag, Integer pageNo, Integer pageSize);
     PostViewModel getPostByIdPost(Integer idUser, Integer idPost);
+    List<PostViewModel> getMostLikedPosts();
     void savePost(PostViewModel postViewModel);
 }

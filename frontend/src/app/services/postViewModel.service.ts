@@ -29,4 +29,8 @@ export class PostViewModelService {
   getPostViewModelByIdPost(idUser: number, idPost: number): Observable<PostViewModel> {
     return this.http.get<PostViewModel>('/api/page/user/' + idUser + '/post/' + idPost);
   }
+
+  getMostLikedPosts(): Observable<PostViewModel[]> {
+    return this.http.get<PostViewModel[]>('api/page/all');
+  }
 }

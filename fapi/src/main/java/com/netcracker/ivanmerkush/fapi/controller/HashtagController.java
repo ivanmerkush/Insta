@@ -16,6 +16,10 @@ public class HashtagController {
 
     HashtagService hashtagService;
 
+    public HashtagController(HashtagService commentService) {
+        this.hashtagService = commentService;
+    }
+
     @GetMapping("/search")
     public List<Hashtag> getHashtagsBySearch(@RequestParam(name="request") String searchWord) {
         return hashtagService.getHashtagsBySearch(searchWord);

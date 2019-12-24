@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.websocket.OnError;
+import javax.xml.bind.attachment.AttachmentMarshaller;
 import java.util.Arrays;
 import java.util.List;
 
@@ -63,6 +64,13 @@ public class PostServiceImpl implements PostService {
         RestTemplate restTemplate = new RestTemplate();
         Post post = restTemplate.getForObject(backendServerUrl +"/api/posts/id/" + idPost, Post.class);
         return post;
+    }
+
+    @Override
+    public List<Post> getAllPosts() {
+        RestTemplate restTemplate = new RestTemplate();
+        Post[] posts = restTemplate.getForObject(backendServerUrl+ "/api/posts/all", Post[].class);
+        return Arrays.asList(posts);
     }
 
 }

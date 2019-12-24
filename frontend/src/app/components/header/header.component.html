@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-  <a class="navbar-brand" href="/">Instagram</a>
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <a class="navbar-brand" [routerLink]="['/home']">Instagram</a>
+  <div *ngIf="!hidden" class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/home']">Home</a>
@@ -15,9 +15,6 @@
         </form>
       </li>
     </ul>
-    <div class="nav-item">
-      <div class="nav-link" [routerLink]="['/messages']">Messages</div>
-    </div>
   </div>
 </nav>
 

@@ -16,4 +16,5 @@ public interface PostService {
     PostEntity savePost(PostEntity post);
     PageModel getPostsForFeed(Integer id, Integer pageNo, Integer pagesize);
     PageModel getPostsByHashtag(Integer idHashtag, Integer pageNo, Integer pagesize);
+    Iterable<PostEntity> getAllPosts();
 }

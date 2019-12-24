@@ -19,7 +19,6 @@ import {UserService} from "./services/user.service";
 import {LoginComponent} from "./components/login/login.component";
 import {PostService} from "./services/post.service";
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { PostsComponent } from './components/posts/posts.component';
 import {PhotoService} from "./services/photo.service";
 import {SubService} from "./services/sub.service";
@@ -30,6 +29,8 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import {HashtagService} from "./services/hashtag.service";
 import { HashtagComponent } from './components/hashtag/hashtag.component';
 import {CommentService} from "./services/comment.service";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 const appRoutes: Routes = [
   {path: "", component: HomeComponent},
@@ -68,6 +69,8 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     PaginationModule.forRoot(),
     BsDatepickerModule.forRoot(),
+    BrowserAnimationsModule,
+    CollapseModule.forRoot(),
   ],
   providers: [UserService, PostService, PhotoService, SubService, PostViewModelService, UserViewModelService, LikeService, HashtagService, CommentService],
   exports: [HomeComponent, UserComponent, LoginComponent, HeaderComponent, PostsComponent, FeedComponent, HashtagComponent, PostComponent],

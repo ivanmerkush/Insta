@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Subscription} from "rxjs";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
-import {ActivatedRoute, Router} from "@angular/router";
-import {Comment} from "../../models/commentModel";
+import {Router} from "@angular/router";
 import {User} from "../../models/userModel";
 import {PostViewModelService} from "../../services/postViewModel.service";
 import {PostViewModel} from "../../models/postViewModel";
@@ -11,6 +10,7 @@ import {LikeService} from "../../services/like.service";
 import {PageModel} from "../../models/pageModel";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {UserService} from "../../services/user.service";
+import {Post} from "../../models/postModel";
 
 @Component({
   selector: 'app-feed',
@@ -23,17 +23,23 @@ export class FeedComponent implements OnInit {
   public currentUser: User;
   public currentPage: number = 0;
   public pageModel: PageModel;
+  public mostLiked: PostViewModel[];
   constructor(private modalService: BsModalService,
               private likeService: LikeService,
               private userService: UserService,
               private postViewModelService: PostViewModelService,
-              private router: Router) { }
+              private router: Router,
+              private loadingService: Ng4LoadingSpinnerService) { }
 
   ngOnInit() {
+    this.loadingService.show();
     this.userService.checkGuest(this.router);
     this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
     const idOfCustomer = this.currentUser.idUser;
     this.loadPostViewModels(idOfCustomer, this.currentPage);
+    this.subscriptions.push(this.postViewModelService.getMostLikedPosts().subscribe(respose => {
+      this.mostLiked = respose as PostViewModel[];
+    }))
   }
 
   private loadPostViewModels(id: number, pageNo: number): void {

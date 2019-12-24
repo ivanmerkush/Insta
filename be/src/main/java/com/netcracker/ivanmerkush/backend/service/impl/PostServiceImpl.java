@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.server.PathParam;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -57,6 +58,11 @@ public class PostServiceImpl implements PostService {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, "date"));
         Page<PostEntity> posts = repository.getPostEntitiesByIdPost(idHashtag, pageable);
         return new PageModel((int)posts.getTotalElements(), posts.getContent());
+    }
+
+    @Override
+    public Iterable<PostEntity> getAllPosts() {
+        return repository.findAll();
     }
 
 

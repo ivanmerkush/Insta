@@ -21,7 +21,7 @@ export class HeaderComponent implements OnInit {
   public modalRef: BsModalRef;
   public subscriptions: Subscription[] = [];
   public currentUser: User;
-  public hidden : boolean;
+  public hidden : boolean = true;
 
   constructor(private userService: UserService,
               private hashtageService: HashtagService,
@@ -30,16 +30,21 @@ export class HeaderComponent implements OnInit {
               private modalService: BsModalService) { }
 
   ngOnInit() {
-    this.currentUser = JSON.parse(localStorage.getItem("currentItem"));
-    if(this.currentUser != null) {
-      this.hidden = false;
-    }
-    this.router.events.subscribe();
+    this.router.events.subscribe(()=> {
+      if(this.router.url === '/login') {
+        this.hidden = true;
+      }
+      else {
+        this.hidden = false;
+      }
+    })
   }
+
+
 
   public showHashtagResult(hashtag: Hashtag) : void {
     this.modalRef.hide();
-    this.router.navigate(['/hashtag/id/' + hashtag.idHashtag]);
+    this.router.navigate(['/hashtag/id/' + hashtag.idHashtag], {});
   }
 
   public showUserPage(user: User) : void {

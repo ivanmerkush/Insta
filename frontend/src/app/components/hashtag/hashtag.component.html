@@ -1,5 +1,4 @@
-<ng4-loading-spinner> </ng4-loading-spinner>
-<div class="container mt-lg-5" align="center">
+<div *ngIf="postExist; else noPosts;" class="container mt-lg-5" align="center">
   <form *ngFor="let postModel of pageModel?.page">
     <div class="form-group form-inline miniprofile">
       <a [routerLink]="['/user', postModel.idUser]">
@@ -60,3 +59,15 @@
     </div>
   </div>
 </div>
+
+<ng-template #noPosts>
+  <div class="page-wrap d-flex flex-row align-items-center mt-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-12 text-center">
+          <span class="display-3 d-block">No posts found with this hashtag</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

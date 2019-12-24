@@ -52,4 +52,9 @@ public class PostViewModelController {
         postViewModelService.savePost(postViewModel);
     }
 
+    @GetMapping(value="/all")
+    public ResponseEntity<List<PostViewModel>> getMostLikedPosts() {
+        List<PostViewModel> postViewModels = postViewModelService.getMostLikedPosts();
+        return ResponseEntity.ok(postViewModels);
+    }
 }

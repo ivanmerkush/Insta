@@ -62,4 +62,9 @@ public class PostController {
     ) {
         return postService.getPostsByHashtag(id, pageNo, pageSize);
     }
+
+    @GetMapping(value="/all")
+    public Iterable<PostEntity> getAllPosts() {
+        return postService.getAllPosts();
+    }
 }
