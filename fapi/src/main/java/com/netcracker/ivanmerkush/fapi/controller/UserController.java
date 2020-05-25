@@ -1,6 +1,8 @@
 package com.netcracker.ivanmerkush.fapi.controller;
 
+import com.netcracker.ivanmerkush.fapi.models.Status;
 import com.netcracker.ivanmerkush.fapi.models.User;
+import com.netcracker.ivanmerkush.fapi.service.ComplaintService;
 import com.netcracker.ivanmerkush.fapi.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +17,12 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
+    private ComplaintService complaintService;
 
-    public UserController(UserService userService) {
+
+    public UserController(UserService userService, ComplaintService complaintService) {
         this.userService = userService;
+        this.complaintService = complaintService;
     }
 
     @GetMapping(value ="/search")
@@ -28,6 +33,25 @@ public class UserController {
     @PostMapping()
     public ResponseEntity<User> saveUser(@RequestBody User user) {
         if (user != null) {
+            return ResponseEntity.ok(userService.saveUser(user));
+        }
+        return null;
+    }
+
+    @PutMapping("/block")
+    public ResponseEntity<User> blockUser(@RequestBody User user) {
+        if (user != null) {
+            user.setStatus(Status.BANNED);
+            complaintService.deleteComplaintsByAccuser(user.getIdUser());
+            return ResponseEntity.ok(userService.saveUser(user));
+        }
+        return null;
+    }
+
+    @PutMapping("/unblock")
+    public ResponseEntity<User> unblockUser(@RequestBody User user) {
+        if (user != null) {
+            user.setStatus(Status.ACTIVE);
             return ResponseEntity.ok(userService.saveUser(user));
         }
         return null;

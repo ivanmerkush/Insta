@@ -1,4 +1,5 @@
-<div *ngIf="userViewModel != null; else spinner">
+<div *ngIf="userViewModel != null">
+  <div *ngIf="isActive() || isAdmin(); else banned">
   <div class="container mt-lg-5" align="center">
     <div class="row">
       <div class="col">
@@ -54,7 +55,24 @@
               <ng-template #unsubbed>
                 <button type="button" class="btn btn-outline-dark" (click)="unsubscribe()">Unsubscribe</button>
               </ng-template>
+              <div *ngIf="isAdmin(); else complaint">
+                <div *ngIf="isActive(); else unblock">
+                  <button type="button" class="btn btn-dark" (click)="blockUser()">Block</button>
+                </div>
+                <ng-template #unblock>
+                  <button type="button" class="btn btn-outline-dark" (click)="unblockUser()">Unblock</button>
+                </ng-template>
+              </div>
+              <ng-template #complaint>
+                <div *ngIf="!isComplaintExists; else delcomplaint">
+                  <button type="button" class="btn btn-dark" (click)="openModal(template)">Complaint</button>
+                </div>
+                <ng-template #delcomplaint>
+                  <button type="button" class="btn btn-outline-dark" (click)="cancelComplaint()">Cancel Complaint</button>
+                </ng-template>
+              </ng-template>
             </div>
+
           </div>
           </form>
       </div>
@@ -63,8 +81,53 @@
   </div>
 
   <app-posts></app-posts>
+  </div>
+  <ng-template #banned>
+    <div class="page-wrap d-flex flex-row align-items-center mt-5">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-12 text-center">
+            <span class="display-1 d-block">Oops</span>
+            <div class="mb-4 lead">User {{userViewModel.nickname}} you were looking for has been banned due to complaints of community</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
 </div>
 
-<ng-template #spinner>
-  <ng4-loading-spinner></ng4-loading-spinner>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title ">Write complaint</h4>
+    <button type="button" class="w-50 pl-5 close pull-right"
+            aria-label="Close"  (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <div class="btn-group" dropdown>
+        <button style="width:450px" id="button-basic" dropdownToggle type="button" class="btn btn-outline-dark dropdown-toggle"
+                aria-controls="dropdown-basic">
+          {{reason}}<span class="caret"></span>
+        </button>
+        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+            role="menu" aria-labelledby="button-basic">
+          <li role="menuitem"><button type="button" style="width:450px" class="btn  btn-outline-dark" (click)="newReason= 0; reason='Spam'">Spam</button></li>
+          <li role="menuitem"><button type="button" style="width:450px" class="btn btn-outline-dark" (click)="newReason= 1;  reason='Obscenity'">Obscenity</button></li>
+        </ul>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Additional info</label>
+      <textarea class="form-control w-100" name="username" [(ngModel)]="newText"> </textarea>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default"
+            (click)="sendComplaint()">Send
+    </button>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal"  (click)="closeModal()">Close</button>
+  </div>
 </ng-template>

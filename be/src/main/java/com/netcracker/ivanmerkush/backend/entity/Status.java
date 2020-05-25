@@ -1,6 +1,6 @@
 package com.netcracker.ivanmerkush.backend.entity;
 
-enum Status {
+public enum Status {
     ACTIVE,
     BANNED
 }

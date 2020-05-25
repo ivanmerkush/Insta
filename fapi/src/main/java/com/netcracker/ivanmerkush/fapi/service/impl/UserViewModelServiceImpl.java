@@ -29,7 +29,7 @@ public class UserViewModelServiceImpl implements UserViewModelService {
         int numberOfPosts = postService.countPostsForAuthor(id);
         int subscribers = subService.countSubscribers(id);
         int subscriptions = subService.countSubscriptions(id);
-        return new UserViewModel(user.getIdUser(), user.getNickname(), user.getName(), user.getEmail(), user.getInfo()
+        return new UserViewModel(user.getIdUser(), user.getNickname(), user.getName(), user.getEmail(), user.getInfo(), user.getStatus(), user.getRole()
                 , user.getProfilePhoto(), numberOfPosts, subscribers, subscriptions);
     }
 }

@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public interface UserService {
+public interface    UserService {
     User getUserById(Integer id);
 
     List<User> getUsersBySearch(String searchWord);

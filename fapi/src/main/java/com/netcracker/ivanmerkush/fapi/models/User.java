@@ -130,12 +130,5 @@ public class User {
     }
 }
 
-enum Role {
-    ADMIN,
-    CUSTOMER
-}
 
-enum Status {
-    ACTIVE,
-    BANNED
-}
+

@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit {
   public logUser: User;
   public isCollapsedLog: boolean = true;
   public isCollapsedReg: boolean = true;
+  public isCollapsedBan: boolean = true;
   public isSigned: boolean;
   constructor(private router: Router,
               private userService: UserService,
@@ -39,14 +40,21 @@ export class LoginComponent implements OnInit {
   public loginToAccount(): void {
     this.isCollapsedLog = true;
     this.isCollapsedReg = true;
+    this.isCollapsedBan = true;
     this.subscriptions.push(this.userService.getUserByNicknameAndPassword(this.logNickname, this.logPassword).subscribe( account => {
       this.logUser = account as User;
       if(this.logUser == null) {
         this.isCollapsedLog = false;
       }
       else {
-        localStorage.setItem("currentUser", JSON.stringify(this.logUser));
-        this.router.navigate(['/home'], {});
+        if(this.logUser.status.toString() == "BANNED")
+        {
+          this.isCollapsedBan = false;
+        }
+        else{
+          localStorage.setItem("currentUser", JSON.stringify(this.logUser));
+          this.router.navigate(['/home'], {});
+        }
       }
     }))
   }

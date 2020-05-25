@@ -1,5 +1,5 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
-import {User} from "../../models/userModel";
+import {User, Role} from "../../models/userModel";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
 import {UserService} from "../../services/user.service";
 import {Router} from "@angular/router";
@@ -16,6 +16,9 @@ import {UserViewModelService} from "../../services/userViewModel.service";
 import {LikeService} from "../../services/like.service";
 import {Like} from "../../models/likeModel";
 import {PageModel} from "../../models/pageModel";
+import {ComplaintService} from "../../services/complaint.service";
+import {ComplaintViewModel} from "../../models/complaintViewModel";
+import {Reason} from "../../models/complaintModel";
 
 @Component({
   selector: 'app-home',
@@ -33,9 +36,12 @@ export class HomeComponent implements OnInit {
   public modalRef: BsModalRef;
   public pageModel: PageModel;
   public newPostViewModel: PostViewModel;
-
   public newText: string = "";
 
+  public accusedId: number;
+  public complaintViewModels: ComplaintViewModel[];
+  public type: TypeOfComplaint = TypeOfComplaint.ALL;
+  public reason: string ="Spam";
   constructor(private userService: UserService,
               private postService: PostService,
               private userViewModelService: UserViewModelService,
@@ -43,6 +49,7 @@ export class HomeComponent implements OnInit {
               private likeService: LikeService,
               private postViewModelService: PostViewModelService,
               private photoService: PhotoService,
+              private complaintService: ComplaintService,
               private modalService: BsModalService,
               private loadingService: Ng4LoadingSpinnerService,
               private router: Router,
@@ -55,6 +62,7 @@ export class HomeComponent implements OnInit {
     const id = temp.idUser;
     this.loadYourPageInfo(id);
     this.loadPostViewModels(id, this.currentPage);
+    this.loadComplaints();
   }
 
   private loadYourPageInfo(id: number) {
@@ -66,6 +74,47 @@ export class HomeComponent implements OnInit {
         localStorage.setItem("currentUser", JSON.stringify(account as User));
       }));
     }))
+  }
+
+  private loadComplaints(): void {
+    this.subscriptions.push(this.complaintService.getComplaints().subscribe(models => {
+      this.complaintViewModels = models as ComplaintViewModel[];
+    }))
+  }
+
+
+  private loadComplaintsByReason(reason: string): void {
+    this.subscriptions.push(this.complaintService.getComplaintsByReason(reason).subscribe(models => {
+      this.complaintViewModels = models as ComplaintViewModel[];
+    }))
+  }
+
+  private deleteComplaint(idProsecutor: number, idAccused: number) {
+    this.subscriptions.push(this.complaintService.deleteComplaint(idProsecutor, idAccused).subscribe(asd => {
+      this.typeOfLoad();
+    }))
+  }
+
+  private blockUser(id: number) {
+    this.userService.getUserById(id).subscribe(user => {
+      this.userService.blockUser(user as User).subscribe(asd => {
+        this.typeOfLoad();
+      })
+
+    })
+  }
+
+  private typeOfLoad() : void{
+    if(this.type == TypeOfComplaint.ALL) {
+      this.loadComplaints();
+    }
+    if(this.type == TypeOfComplaint.REASON) {
+      this.loadComplaintsByReason(this.reason);
+    }
+  }
+
+  private isCustomer(): boolean {
+    return this.userViewModel.role.toString() == "CUSTOMER";
   }
 
   private loadPostViewModels(id: number, pageNo: number): void {
@@ -157,6 +206,9 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/login'], {});
   }
 
+  public showUserPage(id: number) : void {
+    this.router.navigate(['/user/' + id], {});
+  }
 
   private uploadProfilePhoto(): void {
     if(this.selectedFiles != null) {
@@ -177,4 +229,10 @@ export class HomeComponent implements OnInit {
     }, 16);
     this.currentPage = event.page - 1;
   }
+
+}
+
+enum TypeOfComplaint {
+  ALL,
+  REASON
 }

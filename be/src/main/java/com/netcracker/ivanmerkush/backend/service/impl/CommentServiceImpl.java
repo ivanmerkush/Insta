@@ -10,12 +10,13 @@ import com.netcracker.ivanmerkush.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Component
+@Service
 public class CommentServiceImpl implements CommentService {
     @Autowired
     CommentRepository commentRepository;

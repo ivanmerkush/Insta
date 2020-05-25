@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpRequest} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {User} from "../models/userModel";
+import {Status, User} from "../models/userModel";
 import {Router} from "@angular/router";
 
 @Injectable()
@@ -17,6 +17,14 @@ export class  UserService { //todo create interface
 
   saveUser(user: User) : Observable<User> {
     return this.http.post<User>('/api/users/', user);
+  }
+
+  blockUser(user: User): Observable<User> {
+    return this.http.put<User>('/api/users/block', user);
+  }
+
+  unblockUser(user: User): Observable<User> {
+    return this.http.put<User>('/api/users/unblock', user);
   }
 
   getUserById(id: number): Observable<User> {

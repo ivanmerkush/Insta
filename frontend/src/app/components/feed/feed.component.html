@@ -63,46 +63,46 @@
     </div>
   </div>
 </div>
-<div *ngFor="let post of mostLiked">
-  <div class="form-group" >
-    <div class="row">
-      <div class="col">
-        <div class="img_wrap bg-dark">
-          <img src="api/files/{{post.photoPath}}" alt="not found"/>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div  class="_form form-inline">
-    <div class="btn-group ml-5 mb-2" role="group">
-      <div *ngIf="post.like == null;else disliked">
-        <button type="button" class="btn btn-success" (click)="likePost(post)">Like</button>
-      </div>
-      <ng-template #disliked>
-        <button type="button" class="btn btn-danger" (click)="dislikePost(post)">Dislike</button>
-      </ng-template>
-      <button type="button" class="btn" [routerLink]="['/post/id', post.post.idPost]">Comment</button>
-    </div>
-  </div>
-  <div class="form-group">
-    <div style="padding-right: 75%;" class="row">
-      <div class="col">
-        <strong>{{post.likeCount}}</strong> likes
-      </div>
-    </div>
-    <div  class="row">
-      <div class="col">
-        <div class="content">
-          <strong>{{post.nickname}}</strong>: {{post.post.text}}
-        </div>
-      </div>
-    </div>
-    <div style="padding-right: 850px;" class="row">
-      <div class="col">
-        <div class="small font-weight-light">{{dateToString(post.post.date)}}</div>
-      </div>
-    </div>
-</div>
+<!--<div *ngFor="let post of mostLiked">-->
+<!--  <div class="form-group" >-->
+<!--    <div class="row">-->
+<!--      <div class="col">-->
+<!--        <div class="img_wrap bg-dark">-->
+<!--          <img src="api/files/{{post.photoPath}}" alt="not found"/>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div  class="_form form-inline">-->
+<!--    <div class="btn-group ml-5 mb-2" role="group">-->
+<!--      <div *ngIf="post.like == null;else disliked">-->
+<!--        <button type="button" class="btn btn-success" (click)="likePost(post)">Like</button>-->
+<!--      </div>-->
+<!--      <ng-template #disliked>-->
+<!--        <button type="button" class="btn btn-danger" (click)="dislikePost(post)">Dislike</button>-->
+<!--      </ng-template>-->
+<!--      <button type="button" class="btn" [routerLink]="['/post/id', post.post.idPost]">Comment</button>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="form-group">-->
+<!--    <div style="padding-right: 75%;" class="row">-->
+<!--      <div class="col">-->
+<!--        <strong>{{post.likeCount}}</strong> likes-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div  class="row">-->
+<!--      <div class="col">-->
+<!--        <div class="content">-->
+<!--          <strong>{{post.nickname}}</strong>: {{post.post.text}}-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div style="padding-right: 850px;" class="row">-->
+<!--      <div class="col">-->
+<!--        <div class="small font-weight-light">{{dateToString(post.post.date)}}</div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--</div>-->
 <ng-template #spinner>
   <ng4-loading-spinner></ng4-loading-spinner>
 </ng-template>

@@ -1,5 +1,5 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
-import {Role, Status, User} from "../../models/userModel";
+import {Status, User} from "../../models/userModel";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
 import {UserService} from "../../services/user.service";
 import {Subscription} from "rxjs";
@@ -10,6 +10,8 @@ import {SubService} from "../../services/sub.service";
 import {Sub} from "../../models/subModel";
 import {UserViewModelService} from "../../services/userViewModel.service";
 import {UserViewModel} from "../../models/userViewModel";
+import {ComplaintService} from "../../services/complaint.service";
+import {Complaint, Reason} from "../../models/complaintModel";
 
 @Component({
   selector: 'app-user',
@@ -18,12 +20,18 @@ import {UserViewModel} from "../../models/userViewModel";
 })
 export class UserComponent implements OnInit {
 
-  public userViewModel: UserViewModel;
-  public currentUser: User;
-  public isSubbed: boolean;
+  private userViewModel: UserViewModel;
+  private user: User;
+  private currentUser: User;
+  private isSubbed: boolean;
+  private modalRef: BsModalRef;
+  private newReason: Reason;
+  public newText: string;
+  public reason: string = "Reason";
   constructor(private userService: UserService,
               private postService: PostService,
               private subService : SubService,
+              private complaintService: ComplaintService,
               private modalService: BsModalService,
               private activateRoute: ActivatedRoute,
               private loadingService: Ng4LoadingSpinnerService,
@@ -31,24 +39,61 @@ export class UserComponent implements OnInit {
               private userViewModelService: UserViewModelService) {
 
   }
-
   bond: Sub;
+  isComplaintExists: boolean;
 
   private subscriptions: Subscription[] =[];
 
   ngOnInit() {
-    this.loadingService.show();
     this.userService.checkGuest(this.router);
     const id = this.activateRoute.snapshot.params['id'];
     this.loadYourPageInfo(id);
+    this.loadUserInfo(id);
     this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
     this.checkSubscribe(id);
+    this.checkComplaint(id);
   };
+
+
+  public isActive() : boolean {
+    return this.userViewModel.status.toString() == "ACTIVE";
+  }
+
+  public isAdmin(): boolean {
+    return this.currentUser.role.toString() == "ADMIN";
+  }
 
   public checkSubscribe(id: number) : void {
     this.subService.isBondExists(id, this.currentUser.idUser).subscribe(answer => {
       this.isSubbed = answer as boolean;
     });
+  }
+
+  private blockUser(): void {
+    this.subscriptions.push(this.userService.blockUser(this.user).subscribe(account => {
+      this.user = account as User;
+      this.loadYourPageInfo(this.user.idUser);
+    }))
+  }
+
+  private unblockUser(): void {
+    this.subscriptions.push(this.userService.unblockUser(this.user).subscribe(account => {
+      this.user = account as User;
+      this.loadYourPageInfo(this.user.idUser);
+    }))
+  }
+
+
+  public checkComplaint(id: number) : void {
+    this.subscriptions.push(this.complaintService.isComplaintExists(this.currentUser.idUser, id).subscribe(answer => {
+      this.isComplaintExists = answer as boolean;
+    }))
+  }
+
+  private loadUserInfo(id:number) {
+    this.subscriptions.push(this.userService.getUserById(id).subscribe(model => {
+      this.user = model as User;
+    }))
   }
 
   private loadYourPageInfo(id: number) {
@@ -57,8 +102,10 @@ export class UserComponent implements OnInit {
         this.router.navigate(['/**'],{});
       }
       this.userViewModel = model as UserViewModel;
+
     }))
   }
+
 
   private subscribe(): void {
     let bond = new Sub(this.currentUser.idUser, this.userViewModel.idUser);
@@ -85,5 +132,28 @@ export class UserComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscriptions.forEach(subscripiton => subscripiton.unsubscribe());
+  }
+
+  private cancelComplaint() : void {
+    this.subscriptions.push(this.complaintService.deleteComplaint(this.currentUser.idUser, this.userViewModel.idUser).subscribe( value => {
+      this.checkComplaint(this.userViewModel.idUser);
+    }))
+  }
+
+  private sendComplaint(): void {
+    this.subscriptions.push(this.complaintService.saveComplaint(new Complaint(this.newReason, this.newText, new Date(), this.userViewModel.idUser, this.currentUser.idUser)).subscribe( complaint =>{
+      this.checkComplaint(this.userViewModel.idUser);
+      this.closeModal();
+    }))
+  }
+
+  private openModal(template: TemplateRef<any>): void {
+    this.modalRef = this.modalService.show(template);
+  }
+
+  private closeModal(): void {
+    this.newText = "";
+    this.reason = "Reason";
+    this.modalRef.hide();
   }
 }

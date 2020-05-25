@@ -1,6 +1,6 @@
 package com.netcracker.ivanmerkush.backend.entity;
 
-enum Role{
+public enum Role{
     ADMIN,
     CUSTOMER
 }

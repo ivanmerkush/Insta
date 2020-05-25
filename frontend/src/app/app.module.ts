@@ -31,6 +31,7 @@ import { HashtagComponent } from './components/hashtag/hashtag.component';
 import {CommentService} from "./services/comment.service";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import {ComplaintService} from "./services/complaint.service";
 
 const appRoutes: Routes = [
   {path: "", component: HomeComponent},
@@ -72,7 +73,7 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     CollapseModule.forRoot(),
   ],
-  providers: [UserService, PostService, PhotoService, SubService, PostViewModelService, UserViewModelService, LikeService, HashtagService, CommentService],
+  providers: [UserService, PostService, PhotoService, SubService, PostViewModelService, UserViewModelService, LikeService, HashtagService, CommentService, ComplaintService],
   exports: [HomeComponent, UserComponent, LoginComponent, HeaderComponent, PostsComponent, FeedComponent, HashtagComponent, PostComponent],
   bootstrap: [AppComponent]
 })

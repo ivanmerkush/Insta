@@ -7,6 +7,8 @@ public class UserViewModel {
     private String email;
     private String info;
     private String profilePhoto;
+    private Status status;
+    private Role role;
     private int numberOfPosts;
     private int subscribers;
     private int subscriptions;
@@ -15,13 +17,31 @@ public class UserViewModel {
 
     }
 
-    public UserViewModel(int idUser, String nickname, String name, String email, String info,
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public UserViewModel(int idUser, String nickname, String name, String email, String info, Status status, Role role,
                          String profilePhoto, int numberOfPosts, int subscribers, int subscriptions) {
         this.idUser = idUser;
         this.nickname = nickname;
         this.name = name;
         this.email = email;
         this.info = info;
+        this.status = status;
+        this.role = role;
         this.profilePhoto = profilePhoto;
         this.numberOfPosts = numberOfPosts;
         this.subscribers = subscribers;
